@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Duelo de Dioses</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Rubik:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+    <script defer src="game.js"></script>
+  </head>
+  <body>
+    <main class="layout">
+      <header class="hero">
+        <h1>Duelo de Dioses</h1>
+        <p>
+          Entra en la arena celeste, elige a tu deidad favorita y conduce un combate
+          táctico lleno de poderes míticos, escudos divinos y castigos que retumban por
+          el firmamento.
+        </p>
+      </header>
+
+      <section id="selection" class="selection-panel">
+        <h2>Selecciona a tu deidad</h2>
+        <p class="selection-help">
+          Cada dios posee habilidades únicas. Explora sus cartas, elige a tu campeón y
+          enfréntate a una deidad rival controlada por la inteligencia artificial.
+        </p>
+        <div id="god-options" class="card-grid" role="list"></div>
+      </section>
+
+      <section id="game" class="arena hidden" aria-hidden="true">
+        <div class="turn-indicator" id="turn-indicator">
+          Elige una deidad para comenzar.
+        </div>
+        <div class="fighters">
+          <article id="player-card" class="fighter" aria-live="polite">
+            <div class="identity">
+              <span id="player-portrait" class="portrait" aria-hidden="true">⚡</span>
+              <div>
+                <h2 id="player-name">Deidad Aliada</h2>
+                <p id="player-epithet" class="epithet">Campeón elegido</p>
+              </div>
+            </div>
+            <dl class="meters">
+              <div class="meter">
+                <dt>Salud</dt>
+                <dd>
+                  <div class="meter-track" aria-hidden="true">
+                    <div id="player-health-bar" class="meter-fill health"></div>
+                  </div>
+                  <span id="player-health-label" class="meter-value">0 / 0</span>
+                </dd>
+              </div>
+              <div class="meter">
+                <dt>Energía</dt>
+                <dd>
+                  <div class="meter-track" aria-hidden="true">
+                    <div id="player-energy-bar" class="meter-fill energy"></div>
+                  </div>
+                  <span id="player-energy-label" class="meter-value">0 / 0</span>
+                </dd>
+              </div>
+            </dl>
+            <div id="player-status" class="status-chips" aria-live="polite"></div>
+          </article>
+
+          <article id="enemy-card" class="fighter" aria-live="polite">
+            <div class="identity">
+              <span id="enemy-portrait" class="portrait" aria-hidden="true">🔥</span>
+              <div>
+                <h2 id="enemy-name">Oponente</h2>
+                <p id="enemy-epithet" class="epithet">Desconocido</p>
+              </div>
+            </div>
+            <dl class="meters">
+              <div class="meter">
+                <dt>Salud</dt>
+                <dd>
+                  <div class="meter-track" aria-hidden="true">
+                    <div id="enemy-health-bar" class="meter-fill health"></div>
+                  </div>
+                  <span id="enemy-health-label" class="meter-value">0 / 0</span>
+                </dd>
+              </div>
+              <div class="meter">
+                <dt>Energía</dt>
+                <dd>
+                  <div class="meter-track" aria-hidden="true">
+                    <div id="enemy-energy-bar" class="meter-fill energy"></div>
+                  </div>
+                  <span id="enemy-energy-label" class="meter-value">0 / 0</span>
+                </dd>
+              </div>
+            </dl>
+            <div id="enemy-status" class="status-chips" aria-live="polite"></div>
+          </article>
+        </div>
+
+        <section class="controls" aria-live="polite">
+          <h2>Habilidades disponibles</h2>
+          <p id="control-help" class="control-help">
+            Es tu turno: selecciona una habilidad para atacar, curar o protegerte.
+          </p>
+          <div id="ability-buttons" class="ability-grid"></div>
+          <div class="control-actions">
+            <button id="restart" type="button" class="secondary">Elegir otra deidad</button>
+            <button id="rematch" type="button" class="primary">Reiniciar combate</button>
+          </div>
+        </section>
+
+        <section class="battle-log" aria-live="polite" aria-atomic="false">
+          <h2>Crónica del combate</h2>
+          <ul id="log" class="log-list"></ul>
+        </section>
+      </section>
+
+      <footer class="footer">
+        <p>
+          Consejo: administra tu energía. Las habilidades básicas generan poder divino,
+          mientras que las definitivas consumen grandes cantidades para desatar todo su
+          potencial.
+        </p>
+      </footer>
+    </main>
+  </body>
+</html>
