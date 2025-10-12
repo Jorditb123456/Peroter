@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">LinguaBridge</string>
+    <string name="speak_now">Habla ahora…</string>
+    <string name="stop_listening">Detener</string>
+    <string name="start_spanish_prompt">Hablar en español</string>
+    <string name="start_chinese_prompt">Hablar en chino</string>
+    <string name="conversation_header">Conversación asistida</string>
+    <string name="user_prompt_label">Tu mensaje</string>
+    <string name="partner_prompt_label">Mensaje del interlocutor</string>
+    <string name="history_section">Historial</string>
+    <string name="translation_loading">Traduciendo…</string>
+    <string name="microphone_permission_rationale">Se necesita acceso al micrófono para realizar traducciones de voz en tiempo real.</string>
+    <string name="microphone_permission_hint">Debes conceder acceso al micrófono para iniciar una traducción.</string>
+    <string name="request_microphone">Permitir micrófono</string>
+</resources>
