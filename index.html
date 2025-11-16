@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cosigo · ERP de Almacenes</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+    <script defer src="app.js"></script>
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar">
+        <div class="brand">
+          <div class="brand-icon">C</div>
+          <div>
+            <p class="eyebrow">Cosigo ERP</p>
+            <h1>Almacenes Inteligentes</h1>
+          </div>
+        </div>
+        <div class="sidebar-section">
+          <h2>Centros de distribución</h2>
+          <ul id="warehouseList" class="warehouse-list"></ul>
+        </div>
+        <div class="sidebar-section">
+          <h2>Nuevo almacén</h2>
+          <form id="warehouseForm" class="stacked">
+            <label>
+              Nombre
+              <input name="name" type="text" placeholder="CDMX Central" required />
+            </label>
+            <label>
+              Capacidad (m²)
+              <input name="capacity" type="number" min="100" step="50" required />
+            </label>
+            <label>
+              Temperatura controlada
+              <select name="temperature" required>
+                <option value="Si">Sí</option>
+                <option value="No">No</option>
+              </select>
+            </label>
+            <button type="submit" class="primary">Guardar</button>
+          </form>
+        </div>
+        <div class="sidebar-section">
+          <h2>Accesos rápidos</h2>
+          <div class="quick-actions">
+            <button data-filter="all">Inventario completo</button>
+            <button data-filter="low">Stock bajo</button>
+            <button data-filter="idle">Sin movimiento</button>
+          </div>
+        </div>
+      </aside>
+      <main>
+        <header class="page-header">
+          <div>
+            <p class="eyebrow">Panel operativo</p>
+            <h2>Monitoreo en tiempo real</h2>
+          </div>
+          <div class="header-actions">
+            <label class="search">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path
+                  d="M10.5 3a7.5 7.5 0 015.85 12.1l4.27 4.27-1.42 1.41-4.27-4.26A7.5 7.5 0 1110.5 3zm0 2a5.5 5.5 0 100 11 5.5 5.5 0 000-11z"
+                />
+              </svg>
+              <input id="searchInput" type="search" placeholder="Buscar SKU o descripción" />
+            </label>
+            <button id="exportBtn" class="ghost">Exportar CSV</button>
+          </div>
+        </header>
+
+        <section class="kpis" id="kpiWrapper">
+          <!-- contenido dinámico -->
+        </section>
+
+        <section class="inventory-panel">
+          <div class="table-card">
+            <div class="table-header">
+              <div>
+                <p class="eyebrow">Inventario</p>
+                <h3>Productos críticos</h3>
+              </div>
+              <select id="statusFilter">
+                <option value="todos">Todos los estados</option>
+                <option value="optimo">Óptimo</option>
+                <option value="bajo">Stock bajo</option>
+                <option value="bloqueado">Bloqueado</option>
+              </select>
+            </div>
+            <div class="table-wrapper">
+              <table>
+                <thead>
+                  <tr>
+                    <th>SKU</th>
+                    <th>Producto</th>
+                    <th>Almacén</th>
+                    <th class="numeric">Stock</th>
+                    <th class="numeric">P. Reorden</th>
+                    <th>Estatus</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody id="inventoryTable"></tbody>
+              </table>
+            </div>
+          </div>
+          <div class="forms">
+            <form id="itemForm" class="card stacked">
+              <p class="eyebrow">Alta rápida</p>
+              <h3>Nuevo producto</h3>
+              <label>
+                Nombre
+                <input name="name" type="text" placeholder="Cajas plegables" required />
+              </label>
+              <label>
+                SKU
+                <input name="sku" type="text" placeholder="CAJ-001" required />
+              </label>
+              <label>
+                Categoría
+                <input name="category" type="text" placeholder="Empaques" required />
+              </label>
+              <label>
+                Almacén
+                <select name="warehouse" required></select>
+              </label>
+              <label>
+                Stock inicial
+                <input name="stock" type="number" min="0" step="1" required />
+              </label>
+              <label>
+                Punto de reorden
+                <input name="reorder" type="number" min="0" step="1" required />
+              </label>
+              <button type="submit" class="primary">Agregar</button>
+            </form>
+
+            <form id="movementForm" class="card stacked">
+              <p class="eyebrow">Movimientos</p>
+              <h3>Entrada / Salida</h3>
+              <label>
+                Producto
+                <select name="sku" required></select>
+              </label>
+              <label>
+                Tipo
+                <select name="type" required>
+                  <option value="entrada">Entrada</option>
+                  <option value="salida">Salida</option>
+                </select>
+              </label>
+              <label>
+                Cantidad
+                <input name="quantity" type="number" min="1" required />
+              </label>
+              <label>
+                Nota
+                <textarea name="note" rows="2" placeholder="Traslado a tienda"></textarea>
+              </label>
+              <button type="submit" class="secondary">Registrar</button>
+            </form>
+          </div>
+        </section>
+
+        <section class="timeline">
+          <div>
+            <p class="eyebrow">Bitácora</p>
+            <h3>Movimientos recientes</h3>
+          </div>
+          <ol id="movementLog" class="log"></ol>
+        </section>
+      </main>
+    </div>
+  </body>
+</html>
