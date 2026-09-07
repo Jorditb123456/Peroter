@@ -377,7 +377,7 @@ const esc=t=>String(t).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;"
 const mmss=s=>Math.floor(s/60)+":"+String(Math.floor(s%60)).padStart(2,"0");
 const KEY="fitdiario.v1";
 
-let S=null, tempo=null, tempoRest=0, sonandoDesde=null;
+let S=null, tempo=null, tempoRest=0, sonandoDesde=null, guardarArchivo=null;
 
 function cargar(){
   try{ S=JSON.parse(localStorage.getItem(KEY)); }catch(e){ S=null; }
@@ -700,10 +700,16 @@ function panelCambiar(){
   });
 }
 
-function exportar(){
-  const blob=new Blob([JSON.stringify(S,null,2)],{type:"application/json"});
+async function exportar(){
+  const datos=JSON.stringify(S,null,2), nombre="fitdiario-"+hoyISO()+".json";
+  if(guardarArchivo){
+    try{ await guardarArchivo.save({filename:nombre,data:datos}); toast("Copia descargada"); }
+    catch(e){ toast(e&&e.code==="declined"?"Descarga cancelada":"No se pudo descargar la copia"); }
+    return;
+  }
   const a=document.createElement("a");
-  a.href=URL.createObjectURL(blob); a.download="fitdiario-"+hoyISO()+".json";
+  a.href=URL.createObjectURL(new Blob([datos],{type:"application/json"}));
+  a.download=nombre;
   document.body.appendChild(a); a.click(); a.remove();
   setTimeout(()=>URL.revokeObjectURL(a.href),1000);
   toast("Copia descargada");
@@ -799,6 +805,11 @@ function eventos(){
 
 eventos();
 if(cargar()) abrirApp(); else $("#onboarding").classList.remove("hidden");
+
+// Al abrirla como página publicada, la descarga se hace por el guardado del visor.
+if(window.claude&&typeof window.claude.use==="function"){
+  window.claude.use("downloads").then(d=>{ guardarArchivo=d||null; }).catch(()=>{});
+}
 })();
 </script>
 </body>
