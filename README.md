@@ -1,8 +1,35 @@
-# ⚡ FitDiario — entrena todos los días y controla tu rendimiento
+# ◆ FitDiario · El Sistema
 
-App para entrenar a diario, con demostraciones animadas de cada ejercicio,
-coach con IA, sesión guiada por voz, retos, XP y rangos. Funciona en el móvil
-y en el ordenador, **sin instalar nada**. Tus datos se guardan en tu dispositivo.
+App de entrenamiento diario convertida en un **sistema de progresión de cazador**
+al estilo de los manhwa de niveles: clases, dificultad, nivel y rango (E → S →
+Monarca), estadísticas que suben con lo que entrenas, misión diaria con hora
+límite y penalización, puertas semanales con jefe, mazmorras aleatorias, pruebas
+de ascenso, títulos y ventanas del Sistema con voz y sonido. Debajo de todo eso:
+demostraciones animadas, sesión guiada por voz, coach con IA y sincronización
+entre dispositivos. Funciona en el móvil y en el ordenador, sin instalar nada.
+
+## El Sistema
+
+- **Despertar.** Eliges nombre, clase (Luchador, Asesino, Tanque, Monje: cada
+  una con su ciclo semanal de entrenamientos y su estadística principal) y
+  dificultad (Normal, Difícil, Pesadilla, Muerte: multiplica reps, XP y castigo).
+- **Ventana de estado.** Nivel, rango, poder, título y cinco estadísticas (FUE,
+  AGI, VIT, RES, VOL) que crecen según los músculos que entrenas. Cada nivel da
+  3 puntos para asignar a mano.
+- **Misión diaria.** Entrenamiento asignado, calentamiento y extras (flexiones,
+  sentadillas, abdominales, kilómetros) escalados a tu nivel. Límite: 23:59.
+  Fallarla resta XP y aumenta los objetivos del día siguiente un 50 %
+  (modo estricto desactivable).
+- **Puertas.** Una por semana, con jefe y tareas contra reloj, del rango del
+  cazador. Al alcanzar el nivel de un rango superior se abre una **prueba de
+  ascenso**: derrotar a su jefe confirma el rango.
+- **Mazmorras instantáneas.** Puertas rojas aleatorias (35 % de los días), 3–4
+  rondas cortas contra reloj, opcionales, con XP y estadísticas extra.
+- **Títulos.** 18 títulos por logros; el activo se muestra bajo tu nombre.
+- **Ventanas del Sistema.** Avisos con efecto de escritura, sonido, destello y
+  voz grave para subidas de nivel, ascensos, misiones, puertas y penalizaciones.
+- **Canal del Sistema.** El chat con IA habla como el Sistema y puede asignarte
+  misiones secundarias.
 
 ## Cómo usarla
 
@@ -10,7 +37,7 @@ y en el ordenador, **sin instalar nada**. Tus datos se guardan en tu dispositivo
 2. Rellena tu nombre, nivel y días por semana. Ya tienes tu plan.
 3. En el móvil: *Compartir → Añadir a pantalla de inicio* y queda como una app más.
 
-## Qué hace
+## Entrenamiento
 
 **Un entreno distinto cada día**, ajustado a tu nivel, que se puede hacer en
 casa y sin material (si tienes mancuernas, apuntas los kilos):
@@ -45,14 +72,6 @@ tu historial y tus récords. Pregúntale por técnica, versiones cortas del
 entreno, molestias, progreso o motivación, y pídele retos personalizados.
 La IA completa funciona en la versión publicada en claude.ai; en el archivo
 local responde un coach básico con reglas.
-
-**Te reta.**
-- XP por cada serie, entreno, récord y reto. Rangos: Recluta → Cadete →
-  Guerrero → Veterano → Élite → Leyenda.
-- Reto del día (se comprueban solos los que se pueden medir), reto semanal y
-  retos generados por la IA.
-- 12 logros desbloqueables.
-- **Penalización:** saltarte un día planificado resta 50 XP (se puede desactivar).
 
 **Tu rendimiento.** Racha (los descansos planificados no la rompen), entrenos y
 tiempo totales, objetivo semanal, gráfica de volumen semanal (kg × reps),
