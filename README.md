@@ -68,6 +68,11 @@ entre dispositivos. Funciona en el móvil y en el ordenador, sin instalar nada.
   (fácil/justo/muy duro) que modula la progresión semanal.
 - **Exportar.** Historial completo en CSV (entrenos, pesos, actividades, rutas,
   registro diario).
+- **Estado organizado.** Tarjeta, ventana de estado y cifras clave siempre a la
+  vista; el resto (camino, cuerpo y proyección, rendimiento, poderes,
+  habilidades, mapa muscular, ejército, fotos, historial) en secciones
+  plegables con resumen en la cabecera, y "abrir/plegar todo". Lo abierto se
+  recuerda en el dispositivo.
 
 ## El Sistema
 
