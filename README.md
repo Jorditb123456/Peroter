@@ -25,7 +25,14 @@ entre dispositivos. Funciona en el móvil y en el ordenador, sin instalar nada.
   ascenso**: derrotar a su jefe confirma el rango.
 - **Mazmorras instantáneas.** Puertas rojas aleatorias (35 % de los días), 3–4
   rondas cortas contra reloj, opcionales, con XP y estadísticas extra.
-- **Títulos.** 18 títulos por logros; el activo se muestra bajo tu nombre.
+- **Modo sombra.** De 21:00 a 05:00 se abre un ritual nocturno (AMRAP de
+  10–12 min con la interfaz en tonos sombra). Con 4 rondas o más extraes una
+  sombra con nombre y rango (Soldado, Élite, Caballero, Mariscal) para tu
+  ejército; cada sombra da +2 % de XP permanente, hasta +30 %.
+- **Eventos de temporada.** Del día 25 a fin de mes aparece un jefe de
+  temporada propio de cada mes, un rango por encima del tuyo, con XP ×1,25 en
+  todo mientras dura, gran recompensa y +5 a tu estadística principal.
+- **Títulos.** 23 títulos por logros; el activo se muestra bajo tu nombre.
 - **Ventanas del Sistema.** Avisos con efecto de escritura, sonido, destello y
   voz grave para subidas de nivel, ascensos, misiones, puertas y penalizaciones.
 - **Canal del Sistema.** El chat con IA habla como el Sistema y puede asignarte

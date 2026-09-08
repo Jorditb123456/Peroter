@@ -238,6 +238,29 @@ nav button.on b{filter:none}
 .flash{position:fixed;inset:0;z-index:89;pointer-events:none;background:radial-gradient(circle at 50% 50%,rgba(140,190,255,.55),transparent 65%);opacity:0}
 .flash.on{animation:flash .7s ease-out}
 @keyframes flash{0%{opacity:1}100%{opacity:0}}
+/* Modo sombra */
+body.sombra{--bg:#03020a;--bg2:#0a0614;--sf:rgba(16,10,32,.86);--sf2:#1a1030;--line:rgba(160,110,255,.28);--line2:rgba(190,150,255,.55);--bl:#8b5cf6;--bl2:#c4a6ff;--glow:0 0 22px rgba(160,110,255,.5)}
+body.sombra{background-image:radial-gradient(1000px 500px at 50% -160px, rgba(139,92,246,.28), transparent 70%),radial-gradient(700px 400px at 90% 40%, rgba(232,121,249,.10), transparent 70%),repeating-linear-gradient(0deg, rgba(190,150,255,.03) 0 1px, transparent 1px 28px),repeating-linear-gradient(90deg, rgba(190,150,255,.03) 0 1px, transparent 1px 28px)}
+.scard{border:1px solid rgba(190,150,255,.5);border-radius:10px;padding:16px;margin-bottom:14px;background:radial-gradient(320px 160px at 50% 0%,rgba(139,92,246,.28),transparent 70%),linear-gradient(180deg,#0d0818,#06040e);box-shadow:0 0 28px rgba(139,92,246,.18);position:relative}
+.scard .sysh{color:#c4a6ff}.scard .sysh::after{background:linear-gradient(90deg,rgba(190,150,255,.5),transparent)}
+.scard h2{color:#e9dcff}
+.scard .btn{background:linear-gradient(180deg,#5b3fb8,#2b1a66);border-color:rgba(200,170,255,.45);box-shadow:0 0 22px rgba(139,92,246,.45);color:#f3ecff}
+.ejercito{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.ejercito span{font-family:var(--fd);font-size:12px;letter-spacing:.06em;text-transform:uppercase;padding:5px 9px;border-radius:5px;border:1px solid rgba(190,150,255,.4);background:rgba(139,92,246,.12);color:#d9c8ff}
+.ejercito span b{color:#c4a6ff;font-family:var(--fm);margin-left:4px}
+.rondas{display:flex;flex-direction:column;align-items:center;gap:8px}
+.rondas .r{font-family:var(--fm);font-size:64px;font-weight:700;line-height:1;color:#c4a6ff;text-shadow:0 0 18px rgba(196,166,255,.6)}
+.rondas .btn{width:min(84vw,360px)}
+.rondas .lst{font-size:13px;color:var(--tx2);text-align:center;max-width:360px}
+/* Evento de temporada */
+.evento{border:1px solid rgba(245,197,66,.55);border-radius:10px;padding:16px;text-align:center;background:radial-gradient(320px 160px at 50% 0%,rgba(245,197,66,.22),transparent 70%),linear-gradient(180deg,#14100a,#080604);box-shadow:0 0 28px rgba(245,197,66,.15);position:relative;overflow:hidden}
+.evento .jefe{font-size:56px;line-height:1;filter:drop-shadow(0 0 18px rgba(245,197,66,.8));margin:6px 0}
+.evento h3{font-size:22px;color:var(--gold)}
+.evento .eyebrow{color:var(--gold)}
+.evento .tareas{display:grid;gap:6px;margin:12px 0;text-align:left}
+.evento .tareas div{display:flex;justify-content:space-between;font-family:var(--fm);font-size:13px;padding:6px 10px;background:rgba(0,0,0,.4);border-radius:5px;border:1px solid rgba(245,197,66,.25)}
+.evento.cerrado{opacity:.85}
+.evento .cuenta{font-family:var(--fm);font-size:12px;letter-spacing:.1em;color:var(--tx2);margin-top:6px}
 /* Sesión guiada y puerta */
 .guia{position:fixed;inset:0;z-index:70;background:var(--bg);display:none;flex-direction:column;overflow:hidden}
 .guia.on{display:flex}
@@ -310,6 +333,7 @@ nav button.on b{filter:none}
     <div class="tab on" id="tab-hoy">
       <div id="misionCard"></div>
       <div id="mazCard"></div>
+      <div id="sombraCard"></div>
 
       <div class="card hud">
         <div class="hero">
@@ -351,6 +375,7 @@ nav button.on b{filter:none}
         <div class="xpbar" style="margin-top:6px"><i id="xpBar" style="width:0%"></i></div>
         <div class="stats" id="statsList"></div>
       </div>
+      <div class="scard" id="ejercitoCard"></div>
 
       <div class="grid g4" style="margin-bottom:14px">
         <div class="stat"><div class="v cy" id="sRacha">0</div><div class="k">Racha</div></div>
@@ -391,6 +416,7 @@ nav button.on b{filter:none}
 
     <!-- PUERTAS -->
     <div class="tab" id="tab-puertas">
+      <div id="eventoCard"></div>
       <div class="card hud">
         <div class="sysh">◆ Puerta de esta semana</div>
         <div id="puertaCard"></div>
@@ -524,6 +550,7 @@ nav button.on b{filter:none}
         <input type="number" inputmode="numeric" id="gReps" placeholder="Reps">
       </div>
       <div class="ptareas hidden" id="gTareas"></div>
+      <div class="rondas hidden" id="gRondas"><div class="r" id="gRondasN">0</div><button class="btn vi" id="gRonda">+1 ronda completada</button><div class="lst" id="gRondasLst"></div></div>
       <p class="sub" id="gTip" style="max-width:360px"></p>
     </div>
     <div class="ft">
@@ -616,6 +643,7 @@ const PLANES = {
 const DIAS_LARGO=["domingo","lunes","martes","miércoles","jueves","viernes","sábado"];
 const DIAS_CORTO=["D","L","M","X","J","V","S"];
 const MESES=["ene","feb","mar","abr","may","jun","jul","ago","sep","oct","nov","dic"];
+const MESES_LARGO=["enero","febrero","marzo","abril","mayo","junio","julio","agosto","septiembre","octubre","noviembre","diciembre"];
 
 
 /* ================= EL SISTEMA: CLASES, RANGOS, JEFES, TÍTULOS ================= */
@@ -648,6 +676,20 @@ const MAZMORRAS=[
   {n:"Torre del rayo",ic:"⚡",t:7,rondas:4,tareas:[["Saltos de tijera (seg)",40],["Sentadilla con salto",10],["Abdominal bicicleta",20]],xp:120},
   {n:"Fosa de hierro",ic:"⛓️",t:10,rondas:3,tareas:[["Flexiones diamante",8],["Superman",15],["Puente de glúteo",25],["Plancha lateral (seg)",30]],xp:140}
 ];
+const RITUALES=[
+  {n:"Ritual del Verdugo",ic:"🗡️",t:10,circuito:[["Flexiones",8],["Sentadillas",12],["Plancha (seg)",20]],tip:"Tantas rondas como puedas. Calidad antes que velocidad."},
+  {n:"Ritual del Centinela",ic:"🛡️",t:12,circuito:[["Zancadas",10],["Superman",12],["Escaladores (seg)",30]],tip:"Ritmo constante. Respira entre rondas si hace falta."},
+  {n:"Ritual del Lancero",ic:"⚡",t:10,circuito:[["Burpees",6],["Puente de glúteo",15],["Abdominal bicicleta",16]],tip:"Explosivo en los burpees, controlado en el resto."},
+  {n:"Ritual del Ermitaño",ic:"☯️",t:12,circuito:[["Sentadilla isométrica (seg)",30],["Flexiones diamante",6],["Plancha lateral (seg)",20]],tip:"Silencio, control y voluntad. Las sombras escuchan."}
+];
+const NOMBRES_SOMBRA=["Umbra","Nox","Vesper","Tenebra","Caligo","Erebo","Nyx","Morrow","Sable","Ónice","Ceniza","Bruma","Tinieblo","Abismo","Eclipse","Crepúsculo","Penumbra","Fosco","Nocturno","Velo"];
+const RANGOS_SOMBRA=[{min:4,n:"Soldado",ic:"⚔️"},{min:6,n:"Élite",ic:"🗡️"},{min:8,n:"Caballero",ic:"🛡️"},{min:11,n:"Mariscal",ic:"👑"}];
+const EVENTOS_MES=[
+  {n:"Rey del Hielo",ic:"❄️"},{n:"Corazón de Lava",ic:"🌋"},{n:"Hidra de Marzo",ic:"🐍"},{n:"Ángel Caído",ic:"🕊️"},
+  {n:"Bestia Florida",ic:"🌺"},{n:"Kraken de Junio",ic:"🐙"},{n:"Sol Negro",ic:"🌑"},{n:"Fénix de Agosto",ic:"🔥"},
+  {n:"Segador de Cosechas",ic:"🌾"},{n:"Espectro de Octubre",ic:"👻"},{n:"Lobo de Niebla",ic:"🌫️"},{n:"Emperador de Escarcha",ic:"🧊"}
+];
+const EVENTO_DESDE=25;
 const STATS=[["fue","FUE","Fuerza"],["agi","AGI","Agilidad"],["vit","VIT","Vitalidad"],["res","RES","Resistencia"],["vol","VOL","Voluntad"]];
 const TITULOS=[
   {id:"despierto",ic:"👁️",t:"Despierto",d:"Primer entreno",f:s=>s.n>=1},
@@ -667,12 +709,18 @@ const TITULOS=[
   {id:"rC",ic:"🎖️",t:"Cazador de élite",d:"Rango C",f:s=>s.rango>=2},
   {id:"rA",ic:"💎",t:"Cazador de leyenda",d:"Rango A",f:s=>s.rango>=4},
   {id:"muerte10",ic:"☠️",t:"Sin miedo",d:"10 entrenos en Muerte",f:s=>s.muerte>=10},
-  {id:"rM",ic:"👑",t:"Monarca",d:"Rango Monarca",f:s=>s.rango>=6}
+  {id:"rM",ic:"👑",t:"Monarca",d:"Rango Monarca",f:s=>s.rango>=6},
+  {id:"s1",ic:"🌑",t:"Primera sombra",d:"1 sombra extraída",f:s=>s.sombras>=1},
+  {id:"s5",ic:"🌒",t:"Señor de sombras",d:"5 sombras extraídas",f:s=>s.sombras>=5},
+  {id:"s20",ic:"🌘",t:"Ejército de sombras",d:"20 sombras extraídas",f:s=>s.sombras>=20},
+  {id:"e1",ic:"🏵️",t:"Vencedor de temporada",d:"1 evento superado",f:s=>s.eventos>=1},
+  {id:"e3",ic:"🏆",t:"Señor de las temporadas",d:"3 eventos superados",f:s=>s.eventos>=3}
 ];
 const XP={serie:10,sesion:100,pr:50,cal:20};
 function xpNivel(n){ return Math.round(60*Math.pow(n,1.2)); }
 function nivelDe(xp){ let n=1,acc=0; while(n<99&&acc+xpNivel(n)<=xp){ acc+=xpNivel(n); n++; } return {n,en:xp-acc,para:xpNivel(n)}; }
-function xpMult(){ return (DIFICULTADES[S.perfil.dificultad]||DIFICULTADES.normal).xp; }
+function bonusSombras(){ return Math.min(0.3,(S.sombras||[]).length*0.02); }
+function xpMult(){ return Math.round((DIFICULTADES[S.perfil.dificultad]||DIFICULTADES.normal).xp*(1+bonusSombras())*(eventoDe().abierto?1.25:1)*100)/100; }
 function penMult(){ return (DIFICULTADES[S.perfil.dificultad]||DIFICULTADES.normal).pen; }
 function difF(){ return (DIFICULTADES[S.perfil.dificultad]||DIFICULTADES.normal).f; }
 function rangoIdx(){ return S.rango||0; }
@@ -873,6 +921,7 @@ function normalizar(){
   S.stats=Object.assign({fue:10,agi:10,vit:10,res:10,vol:10},S.stats||{}); S.puntos=S.puntos||0;
   S.rango=S.rango||0; S.ascenso=S.ascenso||null; S.misiones=S.misiones||{}; S.mazmorras=S.mazmorras||{}; S.puertas=S.puertas||{};
   S.titulosVistos=S.titulosVistos||S.logrosVistos||[]; S.tituloActivo=S.tituloActivo||null; S.sisVisto=S.sisVisto||{};
+  S.sombras=S.sombras||[]; S.sombraNoche=S.sombraNoche||{}; S.eventos=S.eventos||{};
   S.sistemaDesde=S.sistemaDesde||hoyISO(); S.revisado=S.revisado||S.sistemaDesde;
   if(S.revisado<S.sistemaDesde) S.revisado=S.sistemaDesde;
 }
@@ -889,7 +938,7 @@ function guardar(){
 
 /* ================= SINCRONIZACIÓN ENTRE DISPOSITIVOS ================= */
 const SYNC={db:null,t:null,ultimo:0,aplicando:false,subs:[]};
-const META_CAMPOS=["perfil","ajustes","xp","xpLog","retos","peso","override","revisado","chat","stats","puntos","rango","ascenso","misiones","mazmorras","puertas","titulosVistos","tituloActivo","sisVisto","sistemaDesde"];
+const META_CAMPOS=["perfil","ajustes","xp","xpLog","retos","peso","override","revisado","chat","stats","puntos","rango","ascenso","misiones","mazmorras","puertas","titulosVistos","tituloActivo","sisVisto","sistemaDesde","sombras","sombraNoche","eventos"];
 function syncEstado(txt,on){ const e=$("#syncEstado"); if(!e) return; e.classList.toggle("on",!!on); e.innerHTML="<i></i>"+esc(txt); }
 function syncProgramar(){ if(!SYNC.db||SYNC.aplicando) return; clearTimeout(SYNC.t); SYNC.t=setTimeout(syncSubir,900); }
 function metaLocal(){ const m={mod:S.mod||0}; META_CAMPOS.forEach(k=>{ if(S[k]!==undefined) m[k]=S[k]; }); return m; }
@@ -1230,6 +1279,65 @@ function puertaFallo(mo){
   sysMostrar({t:"Puerta fallada",tipo:"bad",voz:true,tx:mo+(perd?" Penalización: −"+perd+" XP.":"")+" Puedes volver a intentarlo cuando estés preparado."}); pintarTodo();
 }
 
+/* ================= MODO SOMBRA ================= */
+function nocheClave(){ const d=new Date(); if(d.getHours()<5) d.setDate(d.getDate()-1); return iso(d); }
+function sombraAbierta(){ const h=new Date().getHours(); return h>=21||h<5; }
+function ritualDeNoche(){ const k=nocheClave(); const d=desdeISO(k); return RITUALES[(d.getDate()+d.getMonth())%RITUALES.length]; }
+function sombraIniciar(){
+  const k=nocheClave(), reg=S.sombraNoche[k];
+  if(!sombraAbierta()){ toast("El modo sombra se abre a las 21:00"); return; }
+  if(reg&&reg.hecho){ toast("Esta noche ya has realizado el ritual"); return; }
+  const R=ritualDeNoche(); S.sombraNoche[k]={hecho:false,intentos:(reg?reg.intentos:0)+1}; guardar();
+  Object.assign(PU,{tipo:"sombra",clave:k,titulo:"Modo sombra",jefe:{n:R.n,ic:R.ic,t:R.t},tareas:[],xp:0,rondas:0}); PU.on=true; PU.fin=Date.now()+R.t*60000;
+  document.body.classList.add("sombra");
+  $("#guia").classList.add("on"); document.body.style.overflow="hidden";
+  $("#gModo").textContent="Modo sombra · ritual"; $("#gPaso").textContent="AMRAP · "+R.t+" MIN";
+  $("#gCanvas").classList.add("hidden"); $("#gJefe").classList.remove("hidden"); $("#gJefe").textContent=R.ic;
+  $("#gFase").innerHTML=""; $("#gEyebrow").textContent="Ritual"; $("#gNombre").textContent=R.n; $("#gObj").textContent="Completa tantas rondas como puedas";
+  $("#gIns").classList.add("hidden"); $("#gTareas").classList.add("hidden"); $("#gRondas").classList.remove("hidden");
+  $("#gRondasN").textContent="0"; $("#gRondasLst").textContent="Una ronda = "+R.circuito.map(c=>c[1]+" "+c[0]).join(" · ")+". "+R.tip;
+  $("#gTip").textContent="A partir de 4 rondas extraes una sombra. Más rondas, sombra de mayor rango.";
+  $("#gHecho").textContent="Terminar ritual"; $("#gHecho").disabled=false; $("#gSaltar").textContent="Abandonar";
+  clearInterval(PU.timer); PU.timer=setInterval(runnerTick,250); runnerTick();
+  sysPing("bad"); hablarSis("Ritual de sombra. "+R.n+". "+R.t+" minutos. Comienza.");
+}
+function sombraRonda(){ if(!PU.on||PU.tipo!=="sombra") return; PU.rondas++; $("#gRondasN").textContent=PU.rondas; vibrar(40); if(PU.rondas===4) hablarSis("Sombra detectada. Continúa."); }
+function sombraFin(abandono){
+  const r=PU.rondas, k=PU.clave, R=PU.jefe; runnerCerrar(); document.body.classList.remove("sombra");
+  const reg=S.sombraNoche[k]||{intentos:1}; 
+  if(abandono&&r<4){ sysMostrar({t:"Ritual interrumpido",tipo:"bad",tx:"La sombra se ha disipado. Sin recompensa. Vuelve cuando estés dispuesto a terminarlo."}); guardar(); pintarHoy(); return; }
+  reg.hecho=true; reg.rondas=r; S.sombraNoche[k]=reg;
+  const xp=Math.round((40+r*12)*xpMult()); darXP(xp,"Ritual: "+R.n+" · "+r+" rondas");
+  if(r>=4){
+    let rs=RANGOS_SOMBRA[0]; RANGOS_SOMBRA.forEach(x=>{ if(r>=x.min) rs=x; });
+    const nombre=NOMBRES_SOMBRA[(S.sombras.length*7+r)%NOMBRES_SOMBRA.length]+(S.sombras.length>=NOMBRES_SOMBRA.length?" "+(Math.floor(S.sombras.length/NOMBRES_SOMBRA.length)+1):"");
+    S.sombras.push({n:nombre,r:rs.n,ic:rs.ic,f:k,rondas:r}); ganarStatsExtra(1);
+    sysMostrar({h:"◆ Extracción ◆",t:"Álzate, "+nombre,tipo:"gold",flash:true,voz:true,tx:r+" rondas. La sombra se ha sometido a tu voluntad.\n"+rs.ic+" "+rs.n+" «"+nombre+"» se une a tu ejército ("+S.sombras.length+"). Bonus de XP permanente: +"+Math.round(bonusSombras()*100)+" %.\nRecompensa: +"+xp+" XP."});
+  } else sysMostrar({t:"Sombra resistente",tipo:"",tx:r+" rondas. La sombra se ha resistido: necesitas al menos 4. Recompensa parcial: +"+xp+" XP."});
+  guardar(); comprobarTitulos(); pintarTodo();
+}
+
+/* ================= EVENTOS DE TEMPORADA ================= */
+function eventoDe(){
+  const d=new Date(), y=d.getFullYear(), m=d.getMonth(), dia=d.getDate();
+  const clave=y+"-"+String(m+1).padStart(2,"0"), ultimo=new Date(y,m+1,0).getDate();
+  const J=EVENTOS_MES[m], r=Math.min(6,rangoIdx()+1), base=JEFES[r];
+  const reg=S.eventos[clave]||null;
+  return {clave,mes:MESES_LARGO[m],nombre:J.n,ic:J.ic,rango:r,t:base.t+5,tareas:base.tareas.map(([n,v])=>[n,Math.round(v*1.2*difF())]),
+    abierto:dia>=EVENTO_DESDE,dias:dia>=EVENTO_DESDE?ultimo-dia+1:EVENTO_DESDE-dia,xp:Math.round(500*(r+1)*(DIFICULTADES[S.perfil.dificultad]||DIFICULTADES.normal).xp),reg};
+}
+function eventoEntrar(){
+  const e=eventoDe(); if(!e.abierto||(e.reg&&e.reg.hecha)) return;
+  S.eventos[e.clave]=Object.assign({hecha:false,intentos:0,fallos:0},e.reg||{}); S.eventos[e.clave].intentos++; guardar();
+  runnerAbrir({tipo:"evento",clave:e.clave,titulo:"Evento · "+e.mes,sub:"JEFE DE TEMPORADA · LÍMITE "+e.t+" MIN",jefe:{n:e.nombre,ic:e.ic,t:e.t},tareas:e.tareas,xp:e.xp});
+}
+function eventoExito(){
+  const reg=S.eventos[PU.clave]; reg.hecha=true; reg.jefe=PU.jefe.n; darXP(PU.xp,"Evento: "+PU.jefe.n); ganarStatsExtra(5); guardar();
+  sysMostrar({h:"◆ Temporada ◆",t:"Jefe de temporada abatido",tipo:"gold",flash:true,voz:true,tx:PU.jefe.n+" ha caído ante ti. Recompensa: +"+PU.xp+" XP y +5 a tu estadística principal. Tu nombre queda grabado en esta temporada."});
+  comprobarTitulos(); pintarTodo();
+}
+function eventoFallo(mo){ const reg=S.eventos[PU.clave]; if(reg) reg.fallos=(reg.fallos||0)+1; guardar(); sysMostrar({t:"Evento fallado",tipo:"bad",tx:mo+" El jefe de temporada sigue en pie. Puedes reintentarlo mientras el evento esté abierto."}); pintarTodo(); }
+
 /* ---- Ejecutor de puertas y mazmorras (usa la pantalla de sesión) ---- */
 const PU={on:false,tipo:"",clave:"",titulo:"",tareas:[],hechas:[],fin:0,timer:null,jefe:null,xp:0};
 function runnerAbrir(cfg){
@@ -1247,14 +1355,14 @@ function runnerPintar(){
   $("#gTareas").innerHTML=PU.tareas.map((t,k)=>'<div class="mis"><button class="chk'+(PU.hechas[k]?" on":"")+'" data-pt="'+k+'">✓</button><span class="nm">'+esc(t[0])+'<small>'+t[1]+(/seg/.test(t[0])?" segundos":" repeticiones")+'</small></span></div>').join("");
   $("#gHecho").disabled=!PU.hechas.every(Boolean);
 }
-function runnerTick(){ const q=Math.max(0,Math.ceil((PU.fin-Date.now())/1000)); $("#gBig").textContent=mmss(q); $("#gBig").className="big num"+(q<60?" bad":""); if(q<=0) runnerFallo("Se ha agotado el tiempo."); }
+function runnerTick(){ const q=Math.max(0,Math.ceil((PU.fin-Date.now())/1000)); $("#gBig").textContent=mmss(q); $("#gBig").className="big num"+(q<60?" bad":""); if(q<=0){ if(PU.tipo==="sombra") sombraFin(false); else runnerFallo("Se ha agotado el tiempo."); } }
 function runnerCerrar(){
   clearInterval(PU.timer); PU.timer=null; PU.on=false;
   $("#guia").classList.remove("on"); document.body.style.overflow="";
-  $("#gCanvas").classList.remove("hidden"); $("#gJefe").classList.add("hidden"); $("#gTareas").classList.add("hidden"); $("#gHecho").disabled=false; $("#gModo").textContent="Sesión guiada";
+  $("#gCanvas").classList.remove("hidden"); $("#gJefe").classList.add("hidden"); $("#gTareas").classList.add("hidden"); $("#gRondas").classList.add("hidden"); $("#gHecho").disabled=false; $("#gModo").textContent="Sesión guiada";
 }
-function runnerExito(){ if(!PU.hechas.every(Boolean)) return; runnerCerrar(); if(PU.tipo==="puerta") puertaExito(); else mazExito(); }
-function runnerFallo(mo){ runnerCerrar(); if(PU.tipo==="puerta") puertaFallo(mo); else mazFallo(mo); }
+function runnerExito(){ if(PU.tipo==="sombra"){ sombraFin(false); return; } if(!PU.hechas.every(Boolean)) return; runnerCerrar(); if(PU.tipo==="puerta") puertaExito(); else if(PU.tipo==="evento") eventoExito(); else mazExito(); }
+function runnerFallo(mo){ if(PU.tipo==="sombra"){ sombraFin(true); return; } runnerCerrar(); if(PU.tipo==="puerta") puertaFallo(mo); else if(PU.tipo==="evento") eventoFallo(mo); else mazFallo(mo); }
 
 /* ================= TÍTULOS Y RESUMEN ================= */
 function resumen(){
@@ -1264,6 +1372,7 @@ function resumen(){
   t.mazmorras=Object.values(S.mazmorras).filter(m=>m&&m.estado==="hecha").length;
   t.rango=rangoIdx(); t.nivel=nivelDe(S.xp).n;
   t.muerte=Object.values(S.sesiones).filter(s=>s.completada&&s.dif==="muerte").length;
+  t.sombras=S.sombras.length; t.eventos=Object.values(S.eventos).filter(e=>e.hecha).length;
   return t;
 }
 function comprobarTitulos(){
@@ -1353,6 +1462,12 @@ function pintarHoy(){
   $("#mazCard").innerHTML=mz?(()=>{ const M=MAZMORRAS[mz.i]; return '<div class="reto roja'+(mz.estado==="hecha"?" hecho":"")+'" style="margin:0 0 14px"><div class="ic">'+M.ic+'</div><div style="flex:1"><h3>Mazmorra roja · '+esc(M.n)+'</h3><p>'+M.rondas+' rondas: '+M.tareas.map(t=>t[0]+" ×"+Math.round(t[1]*difF())).join(", ")+'. Límite '+M.t+' min.</p>'+
     (mz.estado==="nueva"?'<button class="btn bad sm" data-maz="entrar" style="margin-top:8px">Entrar</button>':mz.estado==="fallada"?'<button class="btn sec sm" data-maz="entrar" style="margin-top:8px">Reintentar</button>':'<p style="color:var(--ok);font-family:var(--fm);font-size:12px;margin-top:6px">✓ LIMPIADA</p>')+'</div><span class="xp">+'+Math.round(M.xp*xpMult())+' XP</span></div>'; })():"";
 
+  // modo sombra
+  const nk=nocheClave(), sn=S.sombraNoche[nk], RI=ritualDeNoche(), abierta=sombraAbierta();
+  $("#sombraCard").innerHTML='<div class="scard"><div class="sysh">◆ Modo sombra</div><div class="row sp" style="align-items:flex-start"><div><h2>'+(sn&&sn.hecho?"Ritual completado":abierta?"La noche te llama":"Se abre a las 21:00")+'</h2>'+
+    '<p class="sub">'+RI.ic+' '+esc(RI.n)+' · '+RI.t+' min AMRAP: '+RI.circuito.map(c=>c[1]+" "+c[0]).join(", ")+'.</p>'+
+    '<p class="sub" style="margin-top:6px">Ejército: <b style="color:#c4a6ff">'+S.sombras.length+' sombras</b> · bonus XP +'+Math.round(bonusSombras()*100)+' %'+(sn&&sn.hecho?' · esta noche: '+sn.rondas+' rondas':'')+'</p></div></div>'+
+    (sn&&sn.hecho?'':'<div style="height:12px"></div><button class="btn" data-sombra="1"'+(abierta?"":" disabled")+'>'+(abierta?"Iniciar ritual de sombra":"Disponible de 21:00 a 05:00")+'</button>')+'</div>';
   $("#hoyTitulo").textContent=R.emoji+" "+R.nombre.split(" — ")[0];
   $("#hoySub").textContent=(R.nombre.includes(" — ")?R.nombre.split(" — ")[1]+" · ":"")+DIAS_LARGO[desdeISO(f).getDay()];
   $("#hoyTag").textContent=R.tag; $("#hoyDur").textContent="≈ "+duracionEstimada(ses)+" min";
@@ -1400,6 +1515,8 @@ function pintarEstado(){
   $("#xpBar").style.width=Math.round(nv.en/nv.para*100)+"%";
   const max=Math.max(40,...STATS.map(([k])=>S.stats[k]))*1.15;
   $("#statsList").innerHTML=STATS.map(([k,ab,n])=>'<div class="st" title="'+n+'"><span class="k">'+ab+'</span><div class="bar"><i style="width:'+Math.round(S.stats[k]/max*100)+'%"></i></div><span class="v">'+Math.floor(S.stats[k])+'</span><button data-punto="'+k+'" '+(S.puntos>0?"":"disabled")+'>+</button></div>').join("");
+  $("#ejercitoCard").innerHTML='<div class="sysh">◆ Ejército de sombras</div><div class="row sp"><h2 style="font-size:17px">'+S.sombras.length+' sombra'+(S.sombras.length===1?"":"s")+'</h2><span class="pill" style="color:#c4a6ff">XP +'+Math.round(bonusSombras()*100)+' %</span></div>'+
+    (S.sombras.length?'<div class="ejercito">'+S.sombras.slice().reverse().slice(0,24).map(x=>'<span>'+x.ic+' '+esc(x.n)+'<b>'+esc(x.r)+'</b></span>').join("")+'</div>':'<p class="sub" style="margin-top:6px">Realiza rituales nocturnos (21:00–05:00) en la pestaña Misión. Cada sombra extraída da +2 % de XP permanente, hasta +30 %.</p>');
   $("#sRacha").textContent=racha(); $("#sMejor").textContent=t.mejor; $("#sTotal").textContent=t.n;
   $("#sMin").innerHTML=(t.min>=60?(t.min/60).toFixed(1)+'<small> h</small>':t.min+'<small> min</small>');
   const lunes=inicioSemana(hoyISO()); let hechos=0;
@@ -1425,6 +1542,13 @@ function pintarEstado(){
 }
 
 function pintarPuertas(){
+  const e=eventoDe();
+  $("#eventoCard").innerHTML='<div class="evento'+(e.abierto?"":" cerrado")+'"><div class="eyebrow">Evento de temporada · '+e.mes+'</div><div class="jefe">'+e.ic+'</div><h3>'+esc(e.nombre)+'</h3>'+
+    '<div class="cuenta">'+(e.abierto?"ABIERTO · QUEDAN "+e.dias+" DÍA"+(e.dias===1?"":"S")+" · XP ×1,25 EN TODO":"SE ABRE EL DÍA "+EVENTO_DESDE+" · FALTAN "+e.dias+" DÍA"+(e.dias===1?"":"S"))+'</div>'+
+    '<div class="tareas">'+e.tareas.map(t=>'<div><span>'+esc(t[0])+'</span><b>'+t[1]+'</b></div>').join("")+'</div>'+
+    (e.reg&&e.reg.hecha?'<p style="color:var(--gold);font-family:var(--fm);letter-spacing:.1em">✓ VENCIDO · +'+e.xp+' XP</p>':
+      '<p class="sub" style="margin-bottom:12px">Límite '+e.t+' min · Recompensa: <b style="color:var(--gold)">+'+e.xp+' XP</b> y +5 a tu estadística principal'+(e.reg&&e.reg.fallos?' · fallos: '+e.reg.fallos:'')+'</p>'+
+      (e.abierto?'<button class="btn gold" data-evento="entrar">Enfrentarse al jefe de temporada</button>':''))+'</div>';
   const p=puertaActual(true), J=JEFES[p.rango], f=hoyISO();
   $("#puertaCard").innerHTML='<div class="puerta'+(p.hecha?" hecha":"")+(p.asc?" asc":"")+'"><div class="eyebrow">'+(p.asc?"Prueba de ascenso · ":"")+RANGOS_CAZADOR[p.rango].n+' · límite '+J.t+' min</div><div class="jefe">'+J.ic+'</div><h3>'+esc(J.n)+'</h3>'+
     '<div class="tareas">'+tareasPuerta(p.rango).map(t=>'<div><span>'+esc(t[0])+'</span><b>'+t[1]+'</b></div>').join("")+'</div>'+
@@ -1454,7 +1578,14 @@ function sistemaDiario(){
   const f=hoyISO(), m=misionDe(f); comprobarMision();
   if(!S.sisVisto[f]){ S.sisVisto[f]=true; guardar();
     sysMostrar({h:"◆ Misión diaria ◆",t:m.pen?"Misión diaria · Penalizada":"Misión diaria",tipo:m.pen?"bad":"",voz:false,tx:m.items.map(i=>"• "+i.t).join("\n")+"\n\nLímite: 23:59 · Recompensa: +"+m.xp+" XP"+(S.ajustes.pen?"\nSi no se completa, se aplicará una penalización.":"")}); }
-  mazGenerar(); puertaActual(); comprobarAscenso(); pintarHoy();
+  mazGenerar(); puertaActual(); comprobarAscenso();
+  const ev=eventoDe();
+  if(ev.abierto&&!(ev.reg&&ev.reg.hecha)&&!S.sisVisto["evento-"+ev.clave]){ S.sisVisto["evento-"+ev.clave]=true; guardar();
+    sysMostrar({h:"◆ Temporada ◆",t:"Evento de "+ev.mes,tipo:"gold",voz:true,tx:"Un jefe de temporada ha aparecido: "+ev.nombre+". Disponible "+ev.dias+" día"+(ev.dias===1?"":"s")+". Mientras dure, toda la XP se multiplica por 1,25.",bt:[{t:"Ver el evento",fn:()=>irA("puertas")},{t:"Entendido"}]}); }
+  const nk=nocheClave();
+  if(sombraAbierta()&&!(S.sombraNoche[nk]&&S.sombraNoche[nk].hecho)&&!S.sisVisto["sombra-"+nk]){ S.sisVisto["sombra-"+nk]=true; guardar();
+    sysMostrar({h:"◆ Sombra ◆",t:"Modo sombra disponible",tipo:"",voz:true,tx:"La noche ha caído. "+ritualDeNoche().n+": "+ritualDeNoche().t+" minutos. Extrae una sombra y tu ejército crecerá.",bt:[{t:"Iniciar ritual",fn:sombraIniciar},{t:"Más tarde"}]}); }
+  pintarHoy();
   const h=new Date().getHours();
   if(h>=20&&!m.hecha&&!S.sisVisto["aviso-"+f]){ S.sisVisto["aviso-"+f]=true; guardar(); sysMostrar({t:"Aviso",tipo:"bad",voz:true,tx:"Quedan "+plazoTexto()+" para el cierre de la misión diaria. Todavía no la has completado."}); }
 }
@@ -1687,6 +1818,9 @@ function eventos(){
   // misión diaria y mazmorra
   $("#misionCard").addEventListener("click",ev=>{ const b=ev.target.closest("[data-mis]"); if(!b) return; const m=misionDe(hoyISO()), it=m.items[+b.dataset.mis]; if(it.auto||m.hecha) return; it.ok=!it.ok; guardar(); comprobarMision(); pintarHoy(); pintarCabecera(); });
   $("#mazCard").addEventListener("click",ev=>{ if(ev.target.closest("[data-maz]")) mazEntrar(); });
+  $("#sombraCard").addEventListener("click",ev=>{ if(ev.target.closest("[data-sombra]")) sombraIniciar(); });
+  $("#gRonda").addEventListener("click",sombraRonda);
+  $("#eventoCard").addEventListener("click",ev=>{ if(ev.target.closest("[data-evento]")) eventoEntrar(); });
 
   // entrenamiento
   const lista=$("#listaEjercicios");
