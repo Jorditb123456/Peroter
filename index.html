@@ -238,6 +238,39 @@ nav button.on b{filter:none}
 .flash{position:fixed;inset:0;z-index:89;pointer-events:none;background:radial-gradient(circle at 50% 50%,rgba(140,190,255,.55),transparent 65%);opacity:0}
 .flash.on{animation:flash .7s ease-out}
 @keyframes flash{0%{opacity:1}100%{opacity:0}}
+/* Fondo de sombras */
+#fondo{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.7}
+#app,#onboarding{position:relative;z-index:1}
+/* Camino, cuerpo, habilidades, evaluación */
+.camino{display:grid;gap:0;margin-top:12px}
+.camino .et{display:grid;grid-template-columns:22px 1fr;gap:10px;position:relative;padding-bottom:14px}
+.camino .et::before{content:"";position:absolute;left:10px;top:18px;bottom:0;width:2px;background:var(--line)}
+.camino .et:last-child::before{display:none}
+.camino .et i{width:22px;height:22px;border-radius:99px;border:2px solid var(--line2);background:var(--bg2);display:grid;place-items:center;font-style:normal;font-size:11px;color:var(--tx2);font-family:var(--fm)}
+.camino .et.on i{border-color:var(--bl2);color:var(--bl2);box-shadow:var(--glow)}
+.camino .et.ok i{background:var(--ok);border-color:var(--ok);color:#03150c}
+.camino .et b{font-family:var(--fd);font-size:14px;letter-spacing:.06em;text-transform:uppercase;display:block}
+.camino .et span{font-size:13px;color:var(--tx2);display:block}
+.camino .et small{font-family:var(--fm);font-size:11px;color:var(--tx3);display:block;margin-top:2px}
+.kv{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}
+.kv div{background:var(--bg2);border:1px solid var(--line);border-radius:8px;padding:10px 12px}
+.kv b{font-family:var(--fm);font-size:20px;display:block;line-height:1.1}
+.kv span{font-size:11px;color:var(--tx2);letter-spacing:.06em;text-transform:uppercase;font-family:var(--fd);font-weight:600}
+.hab-tier{margin-top:12px}
+.hab-tier .tt{font-family:var(--fm);font-size:11px;letter-spacing:.14em;color:var(--tx3);text-transform:uppercase;margin-bottom:6px}
+.hab-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.hab{border:1px solid var(--line);border-radius:8px;padding:10px;background:var(--bg2);opacity:.55}
+.hab.dispo{opacity:1;border-color:var(--line2);cursor:pointer}
+.hab.on{opacity:1;border-color:var(--gold);box-shadow:0 0 14px rgba(245,197,66,.3);background:linear-gradient(180deg,rgba(245,197,66,.1),transparent),var(--bg2)}
+.hab .i{font-size:22px;line-height:1.2}
+.hab b{display:block;font-family:var(--fd);font-size:13px;letter-spacing:.06em;text-transform:uppercase;margin-top:3px}
+.hab span{display:block;font-size:11px;color:var(--tx2);margin-top:3px;line-height:1.35}
+.eval{border:1px solid rgba(34,229,255,.5);border-radius:10px;padding:16px;margin-bottom:14px;background:radial-gradient(320px 160px at 50% 0%,rgba(34,229,255,.2),transparent 70%),var(--sf);box-shadow:0 0 28px rgba(34,229,255,.12)}
+.eval .sysh{color:var(--cy)}
+.eval ol{margin:8px 0 12px;padding-left:18px;color:var(--tx2);font-size:13px}
+.eval ol li{margin-bottom:4px}
+.informe{white-space:pre-wrap;font-size:14px;line-height:1.5;background:var(--bg2);border:1px solid var(--line);border-radius:8px;padding:12px;margin-top:10px}
+.ruta{display:grid;grid-template-columns:1fr 1fr auto;gap:8px;margin-top:12px;align-items:center}
 /* Modo sombra */
 body.sombra{--bg:#03020a;--bg2:#0a0614;--sf:rgba(16,10,32,.86);--sf2:#1a1030;--line:rgba(160,110,255,.28);--line2:rgba(190,150,255,.55);--bl:#8b5cf6;--bl2:#c4a6ff;--glow:0 0 22px rgba(160,110,255,.5)}
 body.sombra{background-image:radial-gradient(1000px 500px at 50% -160px, rgba(139,92,246,.28), transparent 70%),radial-gradient(700px 400px at 90% 40%, rgba(232,121,249,.10), transparent 70%),repeating-linear-gradient(0deg, rgba(190,150,255,.03) 0 1px, transparent 1px 28px),repeating-linear-gradient(90deg, rgba(190,150,255,.03) 0 1px, transparent 1px 28px)}
@@ -290,6 +323,7 @@ body.sombra{background-image:radial-gradient(1000px 500px at 50% -160px, rgba(13
 </head>
 <body>
 
+<canvas id="fondo"></canvas>
 <!-- DESPERTAR (alta) -->
 <section id="onboarding" class="hidden">
   <div class="wrap" style="padding-top:30px">
@@ -305,10 +339,13 @@ body.sombra{background-image:radial-gradient(1000px 500px at 50% -160px, rgba(13
           <select id="oNivel"><option value="principiante">Principiante</option><option value="intermedio" selected>Intermedio</option><option value="avanzado">Avanzado</option></select></div>
         <div class="f"><label class="lbl" for="oObjetivo">Objetivo</label>
           <select id="oObjetivo"><option value="fuerza">Fuerza y músculo</option><option value="perder">Perder grasa</option><option value="forma" selected>Estar en forma</option><option value="resistencia">Resistencia</option></select></div>
-        <div class="f"><label class="lbl" for="oPeso">Peso (kg)</label><input id="oPeso" type="number" inputmode="decimal" step="0.1" placeholder="70"></div>
+        <div class="f"><label class="lbl" for="oPeso">Peso (kg)</label><input id="oPeso" type="number" inputmode="decimal" step="0.1" placeholder="90"></div>
+        <div class="f"><label class="lbl" for="oAltura">Altura (cm)</label><input id="oAltura" type="number" inputmode="numeric" placeholder="175"></div>
+        <div class="f"><label class="lbl" for="oEdad">Edad</label><input id="oEdad" type="number" inputmode="numeric" placeholder="30"></div>
         <div class="f"><label class="lbl" for="oDias">Días/semana</label>
-          <select id="oDias"><option>3</option><option>4</option><option>5</option><option selected>6</option><option>7</option></select></div>
+          <select id="oDias"><option>3</option><option selected>4</option><option>5</option><option>6</option><option>7</option></select></div>
       </div>
+      <p class="sub" style="margin-bottom:12px;font-size:12px">Empieza con 3–4 días: el Sistema irá subiendo días y carga según lo que completes de verdad.</p>
       <button class="btn" id="oGo">Aceptar el Sistema</button>
     </div>
   </div>
@@ -331,8 +368,10 @@ body.sombra{background-image:radial-gradient(1000px 500px at 50% -160px, rgba(13
 
     <!-- MISIÓN -->
     <div class="tab on" id="tab-hoy">
+      <div id="evalCard"></div>
       <div id="misionCard"></div>
       <div id="mazCard"></div>
+      <div id="nocheCard"></div>
       <div id="sombraCard"></div>
 
       <div class="card hud">
@@ -350,6 +389,7 @@ body.sombra{background-image:radial-gradient(1000px 500px at 50% -160px, rgba(13
         </div>
         <div style="height:14px"></div>
         <button class="btn" id="btnGuia">▶ Iniciar sesión guiada</button>
+        <div id="rutaBox"></div>
       </div>
 
       <div id="calCard"></div>
@@ -375,6 +415,9 @@ body.sombra{background-image:radial-gradient(1000px 500px at 50% -160px, rgba(13
         <div class="xpbar" style="margin-top:6px"><i id="xpBar" style="width:0%"></i></div>
         <div class="stats" id="statsList"></div>
       </div>
+      <div class="card hud" id="caminoCard"></div>
+      <div class="card" id="cuerpoCard"></div>
+      <div class="card" id="habCard"></div>
       <div class="scard" id="ejercitoCard"></div>
 
       <div class="grid g4" style="margin-bottom:14px">
@@ -453,7 +496,11 @@ body.sombra{background-image:radial-gradient(1000px 500px at 50% -160px, rgba(13
           <button data-q="Tengo poco tiempo. Dame una versión de 15 minutos del entrenamiento de hoy.">15 minutos</button>
           <button data-q="Me duele un poco la rodilla. ¿Qué cambio hoy?">Molestia</button>
           <button data-q="No tengo ganas de entrenar hoy.">Sin ganas</button>
+          <button data-q="Dime qué comer hoy para perder grasa sin pasar hambre, con mi peso y mi objetivo.">Comida</button>
+          <button data-q="Hoy me veo con menos fuerza de la que toca. Baja las repeticiones del entrenamiento de hoy a algo que pueda completar.">Bájame la carga</button>
+          <button data-q="Genera mi informe semanal.">Informe semanal</button>
         </div>
+        <div id="informeCard"></div>
         <div class="chat" id="chat"></div>
         <div class="chatin">
           <input id="chatIn" placeholder="Habla con el Sistema…" autocomplete="off">
@@ -475,6 +522,12 @@ body.sombra{background-image:radial-gradient(1000px 500px at 50% -160px, rgba(13
           <div class="f"><label class="lbl" for="aDias">Días por semana</label>
             <select id="aDias"><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option></select></div>
         </div>
+        <div class="grid g2">
+          <div class="f"><label class="lbl" for="aAltura">Altura (cm)</label><input id="aAltura" type="number" inputmode="numeric"></div>
+          <div class="f"><label class="lbl" for="aEdad">Edad</label><input id="aEdad" type="number" inputmode="numeric"></div>
+          <div class="f"><label class="lbl" for="aPesoObj">Peso objetivo (kg)</label><input id="aPesoObj" type="number" inputmode="decimal" step="0.5"></div>
+          <div class="f"><label class="lbl" for="aSexo">Sexo (para el IMC)</label><select id="aSexo"><option value="h">Hombre</option><option value="m">Mujer</option><option value="x">Prefiero no decirlo</option></select></div>
+        </div>
         <div class="f"><label class="lbl" for="aObjetivo">Objetivo</label>
           <select id="aObjetivo"><option value="fuerza">Ganar fuerza y músculo</option><option value="perder">Perder grasa</option><option value="forma">Estar en forma</option><option value="resistencia">Ganar resistencia</option></select></div>
         <button class="btn sec" id="btnGuardarPerfil">Guardar cambios</button>
@@ -487,6 +540,20 @@ body.sombra{background-image:radial-gradient(1000px 500px at 50% -160px, rgba(13
         <div class="row sp" style="margin-bottom:10px"><span class="sub">Voz en la sesión guiada</span><button class="btn sm sec" id="btnVoz">Activada</button></div>
         <div class="row sp" style="margin-bottom:10px"><span class="sub">Sonidos</span><button class="btn sm sec" id="btnSonido">Activados</button></div>
         <div class="row sp"><span class="sub">Descanso automático entre series</span><button class="btn sm sec" id="btnAuto">Activado</button></div>
+      </div>
+
+      <div class="card">
+        <div class="sysh">◆ Alarmas</div>
+        <p class="sub">Mientras la app esté abierta, el Sistema te avisa con ventana, sonido y vibración. Si tu navegador lo permite, también con notificación.</p>
+        <div class="grid g2" style="margin-top:10px">
+          <div class="f"><label class="lbl" for="alEntreno">Hora de entrenar</label><input id="alEntreno" type="time"></div>
+          <div class="f"><label class="lbl" for="alNoche">Cierre del día</label><input id="alNoche" type="time"></div>
+        </div>
+        <div class="row sp" style="margin-bottom:10px"><span class="sub">Alarmas del Sistema</span><button class="btn sm sec" id="btnAlarmas">Desactivadas</button></div>
+        <div class="grid g2">
+          <button class="btn sec sm" id="btnNotif" style="width:100%">Permitir notificaciones</button>
+          <button class="btn sec sm" id="btnIcs" style="width:100%">Descargar para el calendario</button>
+        </div>
       </div>
 
       <div class="card hud">
@@ -621,6 +688,13 @@ const RUTINAS = {
     {n:"Comba o saltos",m:"Cardio",t:"tiempo",s:3,r:60,d:45,a:"rope",tip:"Si no tienes comba, simula el salto en el sitio."},
     {n:"Plancha",m:"Core",t:"tiempo",s:2,r:45,d:45,a:"plank",tip:"Para terminar con el core activado."}
   ]},
+  exterior:{nombre:"Exterior — Parque y carrera", tag:"Aire libre", emoji:"🌳", ej:[
+    {n:"Intervalos caminar/trotar",m:"Cardio",t:"tiempo",s:1,r:1200,d:0,a:"run",tip:"Empieza andando rápido 3 minutos para calentar."},
+    {n:"Subidas al banco",m:"Piernas",t:"reps",s:3,r:12,d:60,a:"lunge",tip:"Sube con una pierna, baja controlando. Alterna."},
+    {n:"Fondos en banco",m:"Tríceps",t:"reps",s:3,r:10,d:60,a:"dips",tip:"Manos en el borde del banco, codos hacia atrás."},
+    {n:"Dominadas en la barra del parque o remo",m:"Espalda",t:"reps",s:3,r:6,d:75,a:"pullup",tip:"Si no hay barra, remo con la mochila cargada."},
+    {n:"Plancha en el césped",m:"Core",t:"tiempo",s:2,r:40,d:45,a:"plank",tip:"Mira un punto fijo, respira."}
+  ]},
   movilidad:{nombre:"Movilidad y recuperación", tag:"Suave", emoji:"🧘", ej:[
     {n:"Caminata ligera",m:"Cardio suave",t:"tiempo",s:1,r:1200,d:0,a:"walk",tip:"20 minutos al aire libre si puedes."},
     {n:"Movilidad de cadera",m:"Cadera",t:"tiempo",s:2,r:60,d:20,a:"hipmob",tip:"Círculos amplios y zancada con giro de tronco."},
@@ -633,6 +707,27 @@ const RUTINAS = {
     {n:"Estiramiento general",m:"Movilidad",t:"tiempo",s:1,r:600,d:0,a:"fold",tip:"10 minutos repasando cuello, espalda, cadera y piernas."}
   ]}
 };
+const FASES=[
+  {n:"Cimientos",sem:0,series:2,dias:4,d:"Crear el hábito. Técnica, caminar, poco volumen. El cuerpo aprende.",res:"Más energía, mejor sueño, menos dolor de espalda."},
+  {n:"Construcción",sem:4,series:3,dias:5,d:"Más volumen, primeros trotes cortos, fuerza básica.",res:"La ropa empieza a quedar más suelta. −3 a −5 kg si cuidas la comida."},
+  {n:"Forja",sem:12,series:4,dias:6,d:"Fuerza real, intervalos, sesiones más largas.",res:"Cambio visible: hombros, brazos, cintura. Puedes correr 20–30 min seguidos."},
+  {n:"Atleta",sem:24,series:4,dias:6,d:"Rendimiento. Mantener, afinar, disfrutar.",res:"Cuerpo atlético. Ya no es un plan: es quien eres."}
+];
+const COEF={"Flexiones diamante":0.6,"Fondos en silla":0.8,"Press militar":1.2,"Zancadas":0.6,"Elevación de talones":1.6,"Curl de bíceps":1.4,"Remo con mancuerna":1.4,"Elevación de piernas":0.6,"Sentadilla con salto":0.6,"Zancada caminando":0.6,"Y-T-W de hombro":1.2,"Dominadas o remo bajo mesa":0.7,"Dominadas en la barra del parque o remo":0.7,"Subidas al banco":0.7,"Fondos en banco":0.8};
+const INTERVALOS=[[0,20,"Camina 3 min y trota suave 1 min. Repite hasta completar el tiempo."],[2,22,"Camina 2 min, trota 1 min. Repite."],[4,25,"Camina 90 s, trota 90 s. Repite."],[6,25,"Camina 1 min, trota 2 min. Repite."],[8,28,"Camina 1 min, trota 3 min. Repite."],[10,28,"Camina 1 min, trota 5 min. Repite."],[12,30,"Trota 10 min, camina 1, trota 10 más."],[16,30,"Trote continuo 30 min a ritmo de poder hablar."],[24,35,"Trote continuo 35 min. Últimos 5 min algo más rápidos."]];
+const NOCHE=[
+  {n:"Respiración 4-7-8",r:60,a:"breathe",tip:"Inspira 4 s, aguanta 7, suelta en 8. Baja pulsaciones."},
+  {n:"Gato-camello",r:45,a:"catcow",tip:"Despacio, soltando la espalda tras el día."},
+  {n:"Estiramiento de isquios",r:60,a:"fold",tip:"30 s por pierna, sin rebotes."},
+  {n:"Apertura de pecho y hombros",r:45,a:"armcircle",tip:"Círculos lentos hacia atrás, pecho abierto."},
+  {n:"Respiración final",r:60,a:"breathe",tip:"Después, pantallas fuera. Mañana, más fuerte."}
+];
+const HABILIDADES=[
+  {nivel:3,op:[{id:"segundo_aliento",ic:"🌬️",n:"Segundo aliento",d:"Una misión diaria fallada por semana se perdona sin penalización."},{id:"paso_ligero",ic:"🪶",n:"Paso ligero",d:"Descansos entre series un 15 % más cortos."}]},
+  {nivel:6,op:[{id:"voluntad_hierro",ic:"🧱",n:"Voluntad de hierro",d:"Todas las penalizaciones de XP se reducen a la mitad."},{id:"instinto",ic:"🐺",n:"Instinto",d:"+10 % de XP en cada entrenamiento completado."}]},
+  {nivel:10,op:[{id:"sombra_andante",ic:"👣",n:"Sombra andante",d:"Entrenamientos exteriores ×1,5 XP y +15 XP por km registrado."},{id:"regeneracion",ic:"💠",n:"Regeneración",d:"+1 punto de habilidad extra por cada nivel."}]},
+  {nivel:15,op:[{id:"ojo_sistema",ic:"👁️",n:"Ojo del Sistema",d:"Informe semanal de la IA automático cada lunes."},{id:"cazador_nocturno",ic:"🌙",n:"Cazador nocturno",d:"Rituales de sombra ×1,5 XP."}]}
+];
 const PLANES = {
   3:["descanso","empuje","descanso","pierna","descanso","full","descanso"],
   4:["descanso","empuje","tiron","descanso","pierna","full","descanso"],
@@ -648,10 +743,10 @@ const MESES_LARGO=["enero","febrero","marzo","abril","mayo","junio","julio","ago
 
 /* ================= EL SISTEMA: CLASES, RANGOS, JEFES, TÍTULOS ================= */
 const CLASES={
-  luchador:{n:"Luchador",ic:"⚔️",d:"Fuerza bruta. Empuje y tirón pesados, piernas sólidas.",st:"fue",ciclo:["descanso","empuje","tiron","pierna","core","full","movilidad"],quitar:[0,6,4,2],mult:{fue:1.35,agi:.9,vit:1.1,res:.9,vol:1}},
-  asesino:{n:"Asesino",ic:"🗡️",d:"Velocidad y explosividad. HIIT, cardio y un core afilado.",st:"agi",ciclo:["movilidad","core","empuje","cardio","pierna","full","tiron"],quitar:[0,6,2,4],mult:{fue:.9,agi:1.35,vit:.9,res:1.2,vol:1}},
-  tanque:{n:"Tanque",ic:"🛡️",d:"Aguante inagotable. Piernas, core y resistencia.",st:"vit",ciclo:["descanso","pierna","empuje","core","tiron","pierna","cardio"],quitar:[0,6,2,4],mult:{fue:1,agi:.9,vit:1.35,res:1.2,vol:.9}},
-  monje:{n:"Monje",ic:"☯️",d:"Control y voluntad. Cuerpo completo, core y movilidad.",st:"vol",ciclo:["movilidad","full","core","movilidad","full","core","cardio"],quitar:[0,3,6,2],mult:{fue:.9,agi:1,vit:1,res:1,vol:1.45}}
+  luchador:{n:"Luchador",ic:"⚔️",d:"Fuerza bruta. Empuje y tirón pesados, piernas sólidas.",st:"fue",ciclo:["descanso","empuje","tiron","pierna","core","full","exterior"],quitar:[0,6,4,2],mult:{fue:1.35,agi:.9,vit:1.1,res:.9,vol:1}},
+  asesino:{n:"Asesino",ic:"🗡️",d:"Velocidad y explosividad. HIIT, cardio y un core afilado.",st:"agi",ciclo:["movilidad","core","empuje","exterior","pierna","full","tiron"],quitar:[0,6,2,4],mult:{fue:.9,agi:1.35,vit:.9,res:1.2,vol:1}},
+  tanque:{n:"Tanque",ic:"🛡️",d:"Aguante inagotable. Piernas, core y resistencia.",st:"vit",ciclo:["descanso","pierna","empuje","core","tiron","pierna","exterior"],quitar:[0,6,2,4],mult:{fue:1,agi:.9,vit:1.35,res:1.2,vol:.9}},
+  monje:{n:"Monje",ic:"☯️",d:"Control y voluntad. Cuerpo completo, core y movilidad.",st:"vol",ciclo:["movilidad","full","core","movilidad","full","core","exterior"],quitar:[0,3,6,2],mult:{fue:.9,agi:1,vit:1,res:1,vol:1.45}}
 };
 const DIFICULTADES={
   normal:{n:"Normal",f:1,xp:1,pen:1,d:"Para construir el hábito. El Sistema observa."},
@@ -849,7 +944,7 @@ const CALENTAMIENTO=[
   {n:"Gato-camello",r:30,a:"catcow",tip:"Despacio, respirando con cada movimiento."},
   {n:"Gusano",r:30,a:"inchworm",tip:"Baja las manos al suelo, camina hasta plancha y vuelve."}
 ];
-const SIN_CALENTAMIENTO=["descanso","movilidad"];
+const SIN_CALENTAMIENTO=["descanso","movilidad","exterior"];
 const ease=t=>t<.5?2*t*t:-1+(4-2*t)*t;
 const lerpP=(a,b,t)=>{const o={};for(const k in a)o[k]=[a[k][0]+(b[k][0]-a[k][0])*t,a[k][1]+(b[k][1]-a[k][1])*t];return o;};
 function poseEn(anim,ms){
@@ -885,11 +980,22 @@ function dibujar(ctx,W,H,key,ms,grande){
   ctx.beginPath(); ctx.arc(p.h[0],p.h[1],grande?8:7.5,0,Math.PI*2); ctx.fill();
   ctx.restore();
 }
+const ORBES=Array.from({length:26},(_,i)=>({x:Math.random(),y:Math.random(),r:40+Math.random()*120,vx:(Math.random()-.5)*0.00012,vy:-0.00004-Math.random()*0.00008,h:i%3}));
+let fondoT=0;
+function fondo(ahora){
+  const cv=document.getElementById("fondo"); if(!cv||ahora-fondoT<50) return; fondoT=ahora;
+  const W=cv.width=window.innerWidth, H=cv.height=window.innerHeight, ctx=cv.getContext("2d"); ctx.clearRect(0,0,W,H);
+  const sombra=document.body.classList.contains("sombra");
+  ORBES.forEach(o=>{ o.x+=o.vx*50; o.y+=o.vy*50; if(o.y<-0.2) { o.y=1.2; o.x=Math.random(); } if(o.x<-0.2) o.x=1.2; if(o.x>1.2) o.x=-0.2;
+    const g=ctx.createRadialGradient(o.x*W,o.y*H,0,o.x*W,o.y*H,o.r); const col=sombra?["139,92,246","232,121,249","90,60,180"][o.h]:["77,141,255","139,92,246","34,229,255"][o.h];
+    g.addColorStop(0,"rgba("+col+",.16)"); g.addColorStop(1,"rgba("+col+",0)"); ctx.fillStyle=g; ctx.beginPath(); ctx.arc(o.x*W,o.y*H,o.r,0,Math.PI*2); ctx.fill(); });
+}
 const lienzos=new Map();
 function registrarLienzo(cv,key,grande){ lienzos.set(cv,{key,grande,t0:performance.now()}); }
 function animar(){
   const ahora=performance.now();
   if(document.visibilityState==="visible"){
+    fondo(ahora);
     for(const [cv,info] of lienzos){
       if(!cv.isConnected){ lienzos.delete(cv); continue; }
       if(!info.grande && cv.offsetParent===null) continue;
@@ -922,6 +1028,11 @@ function normalizar(){
   S.rango=S.rango||0; S.ascenso=S.ascenso||null; S.misiones=S.misiones||{}; S.mazmorras=S.mazmorras||{}; S.puertas=S.puertas||{};
   S.titulosVistos=S.titulosVistos||S.logrosVistos||[]; S.tituloActivo=S.tituloActivo||null; S.sisVisto=S.sisVisto||{};
   S.sombras=S.sombras||[]; S.sombraNoche=S.sombraNoche||{}; S.eventos=S.eventos||{};
+  S.base=Object.assign({flex:null,sent:null,plancha:null,fecha:null,hist:[]},S.base||{});
+  S.prog=Object.assign({push:1,squat:1,core:1,pull:1,hinge:1,cardio:1},S.prog||{}); S.progSemana=S.progSemana||null;
+  S.habilidades=S.habilidades||[]; S.noche=S.noche||{}; S.recuperaciones=S.recuperaciones||{}; S.rutas=S.rutas||[]; S.informes=S.informes||{};
+  S.alarmas=Object.assign({entreno:"19:00",noche:"22:00",on:false},S.alarmas||{});
+  S.perfil.sexo=S.perfil.sexo||"h";
   S.sistemaDesde=S.sistemaDesde||hoyISO(); S.revisado=S.revisado||S.sistemaDesde;
   if(S.revisado<S.sistemaDesde) S.revisado=S.sistemaDesde;
 }
@@ -938,7 +1049,7 @@ function guardar(){
 
 /* ================= SINCRONIZACIÓN ENTRE DISPOSITIVOS ================= */
 const SYNC={db:null,t:null,ultimo:0,aplicando:false,subs:[]};
-const META_CAMPOS=["perfil","ajustes","xp","xpLog","retos","peso","override","revisado","chat","stats","puntos","rango","ascenso","misiones","mazmorras","puertas","titulosVistos","tituloActivo","sisVisto","sistemaDesde","sombras","sombraNoche","eventos"];
+const META_CAMPOS=["perfil","ajustes","xp","xpLog","retos","peso","override","revisado","chat","stats","puntos","rango","ascenso","misiones","mazmorras","puertas","titulosVistos","tituloActivo","sisVisto","sistemaDesde","sombras","sombraNoche","eventos","base","prog","progSemana","habilidades","noche","recuperaciones","rutas","informes","alarmas"];
 function syncEstado(txt,on){ const e=$("#syncEstado"); if(!e) return; e.classList.toggle("on",!!on); e.innerHTML="<i></i>"+esc(txt); }
 function syncProgramar(){ if(!SYNC.db||SYNC.aplicando) return; clearTimeout(SYNC.t); SYNC.t=setTimeout(syncSubir,900); }
 function metaLocal(){ const m={mod:S.mod||0}; META_CAMPOS.forEach(k=>{ if(S[k]!==undefined) m[k]=S[k]; }); return m; }
@@ -996,16 +1107,66 @@ function toast(msg){
 }
 
 /* ================= PLAN Y SESIONES ================= */
-function ajusta(ej,nivel){
-  const fr=(nivel==="principiante"?0.7:nivel==="avanzado"?1.25:1)*difF();
-  const fs=nivel==="principiante"?-1:nivel==="avanzado"?1:0;
-  const s=Math.max(1,Math.min(6,ej.s+(ej.s>1?fs:0)));
-  const r=ej.r>=300?ej.r:Math.max(ej.t==="tiempo"?15:4,Math.round(ej.r*fr/(ej.t==="tiempo"?5:1))*(ej.t==="tiempo"?5:1));
-  return {s,r,d:ej.d};
+function semanasDesde(){ return Math.floor((desdeISO(hoyISO())-desdeISO(S.sistemaDesde||S.perfil.creado))/(7*86400000)); }
+function faseActual(){ const w=semanasDesde(); let f=FASES[0],i=0; FASES.forEach((x,k)=>{ if(w>=x.sem){ f=x; i=k; } }); return Object.assign({i,semana:w+1,semEnFase:w-f.sem+1},f); }
+function hab(id){ return (S.habilidades||[]).includes(id); }
+function patron(a){
+  if(/pushup|dips|press|planktap/.test(a)) return "push";
+  if(/squat|lunge|calf|wallsit|jumpsquat/.test(a)) return "squat";
+  if(/plank|sideplank|bicycle|legraise/.test(a)) return "core";
+  if(/pullup|row|curl|superman/.test(a)) return "pull";
+  if(/rdl|bridge/.test(a)) return "hinge";
+  if(/burpee|jacks|run|rope|climber/.test(a)) return "cardio";
+  return "mov";
 }
+function baseEfectiva(){
+  if(S.base&&S.base.fecha) return S.base;
+  const n=S.perfil.nivel; return n==="principiante"?{flex:5,sent:12,plancha:20}:n==="avanzado"?{flex:20,sent:30,plancha:60}:{flex:10,sent:20,plancha:35};
+}
+function intervaloSemana(){ const w=semanasDesde(); let r=INTERVALOS[0]; INTERVALOS.forEach(x=>{ if(w>=x[0]) r=x; }); return {min:r[1],tip:r[2]}; }
+function ajusta(ej){
+  const b=baseEfectiva(), fase=faseActual(), pt=patron(ej.a), pr=(S.prog&&S.prog[pt])||1;
+  const nf=(S.perfil.nivel==="principiante"?0.9:S.perfil.nivel==="avanzado"?1.1:1)*difF(), k=COEF[ej.n]||1;
+  let r;
+  if(ej.a==="run"&&ej.r>=300) r=intervaloSemana().min*60;
+  else if(ej.r>=300||pt==="mov") r=ej.r;
+  else if(ej.t==="tiempo"){ const bt=pt==="core"?b.plancha*0.6:pt==="squat"?b.plancha*0.8:pt==="cardio"?b.plancha*0.7:pt==="push"?b.plancha*0.5:ej.r; r=Math.max(10,Math.min(90,Math.round(bt*k*pr*nf/5)*5)); }
+  else { const br=pt==="push"?b.flex*0.5:pt==="squat"?b.sent*0.45:pt==="core"?b.sent*0.4:pt==="pull"?b.flex*0.6:pt==="hinge"?b.sent*0.5:pt==="cardio"?b.flex*0.4:ej.r; r=Math.max(3,Math.min(30,Math.round(br*k*pr*nf))); }
+  const s=Math.max(1,Math.min(ej.s,fase.series+(S.perfil.nivel==="avanzado"?1:0)));
+  let d=ej.d; if(hab("paso_ligero")) d=Math.round(d*0.85);
+  return {s,r,d};
+}
+function actualizarProgresion(){
+  const sem=inicioSemana(hoyISO()); if(S.progSemana===sem) return;
+  if(S.progSemana){
+    const plan={},ok={};
+    for(let d=0;d<7;d++){ const f=sumaDias(S.progSemana,d), ses=S.sesiones[f]; if(!ses||!ses.completada) continue;
+      ses.ejercicios.forEach(e=>{ const pt=patron(e.a); plan[pt]=(plan[pt]||0)+e.sets.length; ok[pt]=(ok[pt]||0)+e.sets.filter(x=>x.ok).length; }); }
+    const cambios=[];
+    Object.keys(plan).forEach(pt=>{ if(pt==="mov") return; const q=ok[pt]/plan[pt]; const antes=S.prog[pt]||1;
+      if(q>=0.8) S.prog[pt]=Math.min(2.5,antes+0.08); else if(q<0.5) S.prog[pt]=Math.max(0.6,antes-0.05);
+      if(S.prog[pt]!==antes) cambios.push(pt+(S.prog[pt]>antes?" ↑":" ↓")); });
+    if(cambios.length) sysMostrar({t:"Carga recalculada",tipo:cambios.some(c=>c.includes("↓"))?"":"ok",tx:"Según lo completado la semana pasada: "+cambios.join(", ")+". El Sistema ajusta las repeticiones a tu rendimiento real."});
+  }
+  S.progSemana=sem; guardar();
+}
+function evalPendiente(){ if(!S.base.fecha) return true; return (desdeISO(hoyISO())-desdeISO(S.base.fecha))/86400000>=28; }
+function guardarEvaluacion(flex,sent,plancha){
+  const nuevo={flex,sent,plancha,fecha:hoyISO()};
+  if(S.base.fecha) S.base.hist.push({flex:S.base.flex,sent:S.base.sent,plancha:S.base.plancha,fecha:S.base.fecha});
+  Object.assign(S.base,nuevo); Object.keys(S.prog).forEach(k=>S.prog[k]=1);
+  const f=hoyISO(); if(S.sesiones[f]&&!S.sesiones[f].completada) delete S.sesiones[f];
+  guardar(); darXP(Math.round(80*xpMult()),"Evaluación del Sistema");
+  const h=S.base.hist.length?S.base.hist[S.base.hist.length-1]:null;
+  const cmp=h?"\nRespecto a la anterior: flexiones "+(flex-h.flex>=0?"+":"")+(flex-h.flex)+", sentadillas "+(sent-h.sent>=0?"+":"")+(sent-h.sent)+", plancha "+(plancha-h.plancha>=0?"+":"")+(plancha-h.plancha)+" s.":"";
+  sysMostrar({h:"◆ Evaluación ◆",t:"Análisis completado",tipo:"ok",flash:true,voz:true,tx:"Flexiones "+flex+" · Sentadillas "+sent+" · Plancha "+plancha+" s.\nCargas recalculadas a tu nivel real. Empezarás con "+Math.max(3,Math.round(flex*0.5))+" flexiones y "+Math.max(3,Math.round(sent*0.45))+" sentadillas por serie."+cmp+"\nPróxima evaluación en 4 semanas."});
+  pintarTodo();
+}
+function imc(){ const h=(S.perfil.altura||0)/100, p=S.peso.length?S.peso[S.peso.length-1].kg:null; if(!h||!p) return null; return {v:Math.round(p/(h*h)*10)/10,p,h}; }
+function pesoObjetivo(){ if(S.perfil.pesoObjetivo) return S.perfil.pesoObjetivo; const h=(S.perfil.altura||0)/100; return h?Math.round(24*h*h):null; }
 function rutinaDe(fecha){
   if(S.override[fecha]&&RUTINAS[S.override[fecha]]) return S.override[fecha];
-  const c=CLASES[S.perfil.clase]||CLASES.luchador, d=desdeISO(fecha).getDay(), dias=parseInt(S.perfil.dias,10)||6;
+  const c=CLASES[S.perfil.clase]||CLASES.luchador, d=desdeISO(fecha).getDay(), dias=Math.min(parseInt(S.perfil.dias,10)||6,faseActual().dias);
   if(c.quitar.slice(0,Math.max(0,7-dias)).includes(d)) return "descanso";
   return c.ciclo[d];
 }
@@ -1016,8 +1177,8 @@ function sesionDe(fecha){
   const R=RUTINAS[clave];
   ses={rutina:clave,nombre:R.nombre,completada:false,notas:"",inicio:null,dur:0,saltos:0,guiada:false,mod:Date.now(),
     cal:SIN_CALENTAMIENTO.includes(clave)?[]:CALENTAMIENTO.map(c=>({n:c.n,r:c.r,a:c.a,tip:c.tip,ok:false})),
-    ejercicios:R.ej.map(e=>{const a=ajusta(e,S.perfil.nivel);
-      return {n:e.n,m:e.m,t:e.t,a:e.a,tip:e.tip,obj:a,sets:Array.from({length:a.s},()=>({p:"",r:"",ok:false}))};})};
+    ejercicios:R.ej.map(e=>{const a=ajusta(e);
+      return {n:e.n,m:e.m,t:e.t,a:e.a,tip:(e.a==="run"&&e.r>=300)?intervaloSemana().tip:e.tip,obj:a,sets:Array.from({length:a.s},()=>({p:"",r:"",ok:false}))};})};
   S.sesiones[fecha]=ses; guardar();
   return ses;
 }
@@ -1156,7 +1317,7 @@ function darXP(delta,motivo){
   S.xpLog.unshift({f:hoyISO(),d:delta,m:motivo}); S.xpLog=S.xpLog.slice(0,80);
   const despues=nivelDe(S.xp).n;
   if(despues>antes){
-    const sub=despues-antes; S.puntos=(S.puntos||0)+3*sub;
+    const sub=despues-antes; S.puntos=(S.puntos||0)+(hab("regeneracion")?4:3)*sub;
     sysMostrar({t:"Nivel "+despues,tipo:"gold",flash:true,voz:true,tx:"Has subido "+(sub>1?sub+" niveles":"de nivel")+". Puntos de habilidad disponibles: "+S.puntos+". Asígnalos en tu ventana de estado."});
     setTimeout(comprobarAscenso,50);
   }
@@ -1191,20 +1352,21 @@ function comprobarAscenso(){
 /* ================= MISIÓN DIARIA ================= */
 function misionDe(f){
   if(S.misiones[f]) return S.misiones[f];
-  const ant=S.misiones[sumaDias(f,-1)], pen=!!(ant&&ant.fallada);
-  const nivel=nivelDe(S.xp).n, fac=(pen?1.5:1)*difF(), desc=esDescanso(f);
-  const N=k=>Math.min(200,Math.round((10+nivel*1.5)*fac*k));
-  const items=[];
+  const ant=S.misiones[sumaDias(f,-1)], pen=!!(ant&&ant.fallada&&!ant.perdonada);
+  const fase=faseActual(), b=baseEfectiva(), desc=esDescanso(f), rut=rutinaDe(f), items=[];
+  const pasos=[6000,8000,10000,10000][fase.i], fac=(pen?1.3:1);
   if(!desc) items.push({id:"entreno",t:"Completar el entrenamiento asignado",auto:true,ok:false});
-  if(!desc&&!SIN_CALENTAMIENTO.includes(rutinaDe(f))) items.push({id:"cal",t:"Calentamiento completo",auto:true,ok:false});
-  items.push({id:"flex",t:"Flexiones extra × "+N(desc?.5:1),ok:false});
-  items.push({id:"sent",t:"Sentadillas extra × "+N(desc?.6:1.2),ok:false});
-  items.push({id:"abd",t:"Abdominales extra × "+N(desc?.5:1),ok:false});
-  items.push({id:"km",t:desc?"Caminar 3 km":"Caminar o correr 2 km",ok:false});
+  else items.push({id:"paseo",t:"Caminar 30 min a buen ritmo",ok:false});
+  if(!desc&&!SIN_CALENTAMIENTO.includes(rut)) items.push({id:"cal",t:"Calentamiento completo",auto:true,ok:false});
+  items.push({id:"pasos",t:Math.round(pasos*fac/500)*500+" pasos en el día",ok:false});
+  items.push({id:"agua",t:"Beber 2 litros de agua",ok:false});
+  items.push({id:"comida",t:"Sin azúcar añadido ni ultraprocesados",ok:false});
+  if(fase.i>=1&&!desc) items.push({id:"extra",t:"Flexiones extra × "+Math.max(3,Math.round(b.flex*0.3*fac))+" (cuando quieras)",ok:false});
+  items.push({id:"noche",t:"Cierre del día (5 min guiados)",auto:true,ok:false});
   S.misiones[f]={items,hecha:false,fallada:false,pen,xp:Math.round(150*xpMult()*(pen?1.2:1))};
   guardar(); return S.misiones[f];
 }
-function misionAuto(f,m){ const ses=S.sesiones[f]; m.items.forEach(it=>{ if(it.id==="entreno") it.ok=!!(ses&&ses.completada); if(it.id==="cal") it.ok=!!(ses&&ses.cal&&ses.cal.length&&calHecho(ses)); }); }
+function misionAuto(f,m){ const ses=S.sesiones[f]; m.items.forEach(it=>{ if(it.id==="entreno") it.ok=!!(ses&&ses.completada); if(it.id==="cal") it.ok=!!(ses&&ses.cal&&ses.cal.length&&calHecho(ses)); if(it.id==="noche") it.ok=!!S.noche[f]; }); }
 function comprobarMision(){
   const f=hoyISO(), m=misionDe(f); misionAuto(f,m);
   if(!m.hecha&&!m.fallada&&m.items.every(i=>i.ok)){
@@ -1222,7 +1384,12 @@ function aplicarPenalizaciones(){
   for(let i=0;i<400&&f<=ayer;i++){
     const m=S.misiones[f]||misionDe(f); misionAuto(f,m);
     if(!m.hecha&&!m.fallada&&m.items.every(x=>x.ok)){ m.hecha=true; cumplidas++; S.xp+=m.xp; S.xpLog.unshift({f,d:m.xp,m:"Misión diaria"}); }
-    if(!m.hecha&&!m.fallada){ m.fallada=true; falladas++; if(S.ajustes.pen) perdida+=Math.round(100*penMult()); }
+    if(!m.hecha&&!m.fallada){
+      m.fallada=true;
+      const sem=inicioSemana(f);
+      if(hab("segundo_aliento")&&!(S.recuperaciones[sem]>0)){ S.recuperaciones[sem]=1; m.perdonada=true; }
+      else { falladas++; if(S.ajustes.pen) perdida+=Math.round(100*penMult()*(hab("voluntad_hierro")?0.5:1)); }
+    }
     f=sumaDias(f,1);
   }
   S.revisado=hoyISO(); guardar();
@@ -1275,8 +1442,76 @@ function puertaExito(){
 }
 function puertaFallo(mo){
   const p=S.puertas[PU.clave]; if(p) p.fallos=(p.fallos||0)+1;
-  const perd=S.ajustes.pen?Math.round(40*penMult()):0; if(perd) darXP(-perd,"Puerta fallada"); guardar();
+  const perd=S.ajustes.pen?Math.round(40*penMult()*(hab("voluntad_hierro")?0.5:1)):0; if(perd) darXP(-perd,"Puerta fallada"); guardar();
   sysMostrar({t:"Puerta fallada",tipo:"bad",voz:true,tx:mo+(perd?" Penalización: −"+perd+" XP.":"")+" Puedes volver a intentarlo cuando estés preparado."}); pintarTodo();
+}
+
+/* ================= HABILIDADES ================= */
+function elegirHabilidad(id){
+  const nv=nivelDe(S.xp).n, tier=HABILIDADES.find(t=>t.op.some(o=>o.id===id)); if(!tier||nv<tier.nivel) return;
+  if(tier.op.some(o=>S.habilidades.includes(o.id))) { toast("Ya has elegido una habilidad de este nivel"); return; }
+  S.habilidades.push(id); guardar(); const h=tier.op.find(o=>o.id===id);
+  sysMostrar({t:"Habilidad adquirida",tipo:"gold",flash:true,voz:true,tx:h.ic+" "+h.n+". "+h.d});
+  pintarTodo();
+}
+
+/* ================= ALARMAS ================= */
+const AL={ultimo:{}};
+function alarmaTick(){
+  if(!S||!S.alarmas.on||!$("#app")||$("#app").classList.contains("hidden")) return;
+  const d=new Date(), hm=String(d.getHours()).padStart(2,"0")+":"+String(d.getMinutes()).padStart(2,"0"), f=hoyISO();
+  const disparar=(k,t,tx,fn)=>{ if(AL.ultimo[k]===f) return; AL.ultimo[k]=f; sysMostrar({h:"◆ Alarma ◆",t,tipo:"",voz:true,tx,bt:fn?[{t:"Ir",fn},{t:"Luego"}]:undefined}); notificar(t,tx); };
+  const ses=S.sesiones[f];
+  if(hm===S.alarmas.entreno&&!(ses&&ses.completada)) disparar("entreno","Hora de entrenar","El Sistema te espera. Entrenamiento asignado: "+RUTINAS[rutinaDe(f)].nombre.split(" — ")[0]+".",()=>irA("hoy"));
+  if(hm===S.alarmas.noche&&!S.noche[f]) disparar("noche","Cierre del día","Cinco minutos de recuperación guiada antes de dormir.",nocheIniciar);
+  if(hm==="22:00"&&!misionDe(f).hecha) disparar("mision","Misión diaria abierta","Quedan 2 horas para el cierre. Revisa lo que falta.",()=>irA("hoy"));
+}
+function notificar(t,tx){ try{ if("Notification" in window&&Notification.permission==="granted") new Notification(t,{body:tx}); }catch(e){} }
+async function pedirNotificaciones(){
+  try{ if(!("Notification" in window)) { toast("Este navegador no permite notificaciones"); return; }
+    const r=await Notification.requestPermission(); toast(r==="granted"?"Notificaciones permitidas":"Notificaciones no permitidas aquí. Las alarmas en la app siguen funcionando.");
+  }catch(e){ toast("No se pudo pedir permiso de notificaciones"); }
+}
+function generarICS(){
+  const ev=(uid,hora,titulo,desc)=>{ const [h,m]=hora.split(":"); const d=new Date(); const st=d.getFullYear()+String(d.getMonth()+1).padStart(2,"0")+String(d.getDate()).padStart(2,"0")+"T"+h+m+"00";
+    return "BEGIN:VEVENT\r\nUID:"+uid+"@fitdiario\r\nDTSTAMP:"+st+"\r\nDTSTART:"+st+"\r\nDURATION:PT30M\r\nRRULE:FREQ=DAILY\r\nSUMMARY:"+titulo+"\r\nDESCRIPTION:"+desc+"\r\nBEGIN:VALARM\r\nTRIGGER:PT0M\r\nACTION:DISPLAY\r\nDESCRIPTION:"+titulo+"\r\nEND:VALARM\r\nEND:VEVENT\r\n"; };
+  return "BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//FitDiario//El Sistema//ES\r\n"+ev("entreno",S.alarmas.entreno,"Entrenamiento del Sistema","Tu entrenamiento asignado. Abre FitDiario.")+ev("noche",S.alarmas.noche,"Cierre del día","5 minutos de recuperación guiada.")+ev("mision","22:00","Misión diaria: quedan 2 h","Revisa lo que falta de la misión diaria.")+"END:VCALENDAR\r\n";
+}
+async function descargarICS(){
+  const datos=generarICS();
+  if(guardarArchivo){ try{ await guardarArchivo.save({filename:"fitdiario-alarmas.txt",data:datos}); toast("Guardado. Cámbiale la extensión a .ics y ábrelo con tu calendario."); }catch(e){ toast("Descarga cancelada"); } return; }
+  const a=document.createElement("a"); a.href=URL.createObjectURL(new Blob([datos],{type:"text/calendar"})); a.download="fitdiario-alarmas.ics"; document.body.appendChild(a); a.click(); a.remove(); toast("Ábrelo con tu calendario para crear las alarmas");
+}
+
+/* ================= INFORME SEMANAL =================*/
+async function informeSemanal(manual){
+  const sem=inicioSemana(hoyISO());
+  if(S.informes[sem]&&!manual){ return; }
+  if(!sampleIA){ toast("El informe con IA está disponible al abrir la app desde su enlace"); return; }
+  const b=$("#btnInforme"); if(b){ b.disabled=true; b.textContent="Analizando…"; }
+  try{
+    const txt=await sampleIA(INSTR+"\n\nRedacta el INFORME SEMANAL del cazador: 1) qué ha hecho esta semana con números (entrenamientos, series, kg, rutas, misiones), 2) qué ha mejorado y qué ha fallado, 3) peso y tendencia realista, 4) tres órdenes concretas para la próxima semana. Máximo 180 palabras, texto plano, tono del Sistema.\n\nDATOS:\n"+contextoCoach()+"\nPESOS: "+S.peso.slice(-6).map(x=>x.f+" "+x.kg+" kg").join(", ")+"\nRUTAS: "+S.rutas.slice(-6).map(r=>r.f+" "+r.km+" km").join(", "),{modelTier:"complex",cache:false});
+    S.informes[sem]=(txt&&txt.text||"").trim(); guardar(); pintarChat();
+    sysMostrar({h:"◆ Informe ◆",t:"Informe semanal",tipo:"",tx:S.informes[sem].slice(0,600)});
+  }catch(e){ toast("No se pudo generar el informe ahora"); }
+  if(b){ b.disabled=false; b.textContent="Informe semanal"; }
+}
+function herramientasIA(){
+  const f=hoyISO();
+  return [
+    {name:"cambiar_entrenamiento",description:"Cambia el entrenamiento asignado de hoy. Devuelve el nuevo entrenamiento. Claves válidas: empuje, tiron, pierna, core, full, cardio, exterior, movilidad, descanso.",inputSchema:{type:"object",properties:{clave:{type:"string"}},required:["clave"]},
+      execute:({clave})=>{ clave=String(clave); if(!RUTINAS[clave]) throw new Error("clave desconocida"); if(S.sesiones[f]&&S.sesiones[f].completada) throw new Error("el entrenamiento de hoy ya está cerrado"); S.override[f]=clave; delete S.sesiones[f]; delete S.misiones[f]; guardar(); misionDe(f); pintarTodo(); return "Hoy: "+RUTINAS[clave].nombre; }},
+    {name:"ajustar_ejercicio",description:"Ajusta series y/o repeticiones (o segundos) de un ejercicio del entrenamiento de hoy, por nombre aproximado. Úsalo para bajar o subir la carga. Devuelve el ajuste aplicado.",inputSchema:{type:"object",properties:{nombre:{type:"string"},series:{type:"number"},reps:{type:"number"}},required:["nombre"]},
+      execute:({nombre,series,reps})=>{ const ses=sesionDe(f); const n=String(nombre).toLowerCase(); const e=ses.ejercicios.find(x=>x.n.toLowerCase().includes(n)||n.includes(x.n.toLowerCase().split(" ")[0])); if(!e) throw new Error("no hay un ejercicio así hoy");
+        if(series>0){ const sN=Math.max(1,Math.min(6,Math.round(Number(series)))); e.obj.s=sN; while(e.sets.length<sN) e.sets.push({p:"",r:"",ok:false}); e.sets=e.sets.slice(0,sN); }
+        if(reps>0) e.obj.r=Math.max(e.t==="tiempo"?10:2,Math.round(Number(reps))); guardar(); pintarHoy(); return e.n+": "+e.obj.s+"×"+e.obj.r; }},
+    {name:"asignar_mision_secundaria",description:"Asigna al cazador una misión secundaria para hoy con recompensa de XP (60-160). Devuelve confirmación.",inputSchema:{type:"object",properties:{titulo:{type:"string"},descripcion:{type:"string"},xp:{type:"number"}},required:["titulo","descripcion"]},
+      execute:({titulo,descripcion,xp})=>{ const est=estadoReto(f); if(est.ia&&!est.ia.hecho) throw new Error("ya hay una misión secundaria pendiente"); est.ia={t:String(titulo).slice(0,40),d:String(descripcion).slice(0,160),xp:Math.max(40,Math.min(200,Number(xp)||100)),hecho:false}; guardar(); pintarPuertas(); return "Misión asignada: "+est.ia.t; }},
+    {name:"registrar_peso",description:"Registra el peso corporal de hoy en kg. Devuelve el registro.",inputSchema:{type:"object",properties:{kg:{type:"number"}},required:["kg"]},
+      execute:({kg})=>{ const k=Math.round(Number(kg)*10)/10; if(!(k>30&&k<300)) throw new Error("peso no válido"); const i=S.peso.findIndex(x=>x.f===f); if(i>=0) S.peso[i].kg=k; else S.peso.push({f,kg:k}); S.peso.sort((a,b)=>a.f<b.f?-1:1); guardar(); pintarEstado(); return "Peso registrado: "+k+" kg"; }},
+    {name:"cambiar_dificultad",description:"Cambia la dificultad del cazador: normal, dificil, pesadilla o muerte. Úsalo solo si el cazador lo pide o si claramente no completa las sesiones. Devuelve confirmación.",inputSchema:{type:"object",properties:{dificultad:{type:"string"}},required:["dificultad"]},
+      execute:({dificultad})=>{ const d=String(dificultad).toLowerCase(); if(!DIFICULTADES[d]) throw new Error("dificultad desconocida"); S.perfil.dificultad=d; AJ.dif=d; if(S.sesiones[f]&&!S.sesiones[f].completada&&!S.override[f]) delete S.sesiones[f]; guardar(); pintarTodo(); return "Dificultad: "+DIFICULTADES[d].n; }}
+  ];
 }
 
 /* ================= MODO SOMBRA ================= */
@@ -1307,7 +1542,7 @@ function sombraFin(abandono){
   const reg=S.sombraNoche[k]||{intentos:1}; 
   if(abandono&&r<4){ sysMostrar({t:"Ritual interrumpido",tipo:"bad",tx:"La sombra se ha disipado. Sin recompensa. Vuelve cuando estés dispuesto a terminarlo."}); guardar(); pintarHoy(); return; }
   reg.hecho=true; reg.rondas=r; S.sombraNoche[k]=reg;
-  const xp=Math.round((40+r*12)*xpMult()); darXP(xp,"Ritual: "+R.n+" · "+r+" rondas");
+  const xp=Math.round((40+r*12)*xpMult()*(hab("cazador_nocturno")?1.5:1)); darXP(xp,"Ritual: "+R.n+" · "+r+" rondas");
   if(r>=4){
     let rs=RANGOS_SOMBRA[0]; RANGOS_SOMBRA.forEach(x=>{ if(r>=x.min) rs=x; });
     const nombre=NOMBRES_SOMBRA[(S.sombras.length*7+r)%NOMBRES_SOMBRA.length]+(S.sombras.length>=NOMBRES_SOMBRA.length?" "+(Math.floor(S.sombras.length/NOMBRES_SOMBRA.length)+1):"");
@@ -1405,7 +1640,8 @@ function terminarEntreno(silencioso){
   ses.dur=ses.inicio?Math.max(1,Math.round((Date.now()-ses.inicio)/60000)):0; ses.fin=Date.now();
   ses.prsNuevos=records().filter(([n,r])=>r.f===f&&(!antes[n]||r.punt>antes[n].punt)).length;
   pararDescanso();
-  const ganado=Math.round((XP.sesion+v.series*XP.serie+ses.prsNuevos*XP.pr)*xpMult());
+  let ganado=Math.round((XP.sesion+v.series*XP.serie+ses.prsNuevos*XP.pr)*xpMult()*(hab("instinto")?1.1:1)*(ses.rutina==="exterior"&&hab("sombra_andante")?1.5:1));
+  if(ses.ruta&&ses.ruta.km>0){ S.rutas.push({f,km:ses.ruta.km,min:ses.ruta.min||0}); if(hab("sombra_andante")) ganado+=Math.round(15*ses.ruta.km); }
   const g=ganarStats(ses);
   darXP(ganado,"Entrenamiento "+ses.nombre.split(" — ")[0]+(ses.prsNuevos?" · "+ses.prsNuevos+" récord"+(ses.prsNuevos>1?"s":""):""));
   const st=Object.entries(g).filter(([k,x])=>x>0).map(([k,x])=>STATS.find(s=>s[0]===k)[1]+" +"+x.toFixed(1)).join("  ");
@@ -1462,6 +1698,17 @@ function pintarHoy(){
   $("#mazCard").innerHTML=mz?(()=>{ const M=MAZMORRAS[mz.i]; return '<div class="reto roja'+(mz.estado==="hecha"?" hecho":"")+'" style="margin:0 0 14px"><div class="ic">'+M.ic+'</div><div style="flex:1"><h3>Mazmorra roja · '+esc(M.n)+'</h3><p>'+M.rondas+' rondas: '+M.tareas.map(t=>t[0]+" ×"+Math.round(t[1]*difF())).join(", ")+'. Límite '+M.t+' min.</p>'+
     (mz.estado==="nueva"?'<button class="btn bad sm" data-maz="entrar" style="margin-top:8px">Entrar</button>':mz.estado==="fallada"?'<button class="btn sec sm" data-maz="entrar" style="margin-top:8px">Reintentar</button>':'<p style="color:var(--ok);font-family:var(--fm);font-size:12px;margin-top:6px">✓ LIMPIADA</p>')+'</div><span class="xp">+'+Math.round(M.xp*xpMult())+' XP</span></div>'; })():"";
 
+  // evaluación
+  $("#evalCard").innerHTML=evalPendiente()?'<div class="eval"><div class="sysh">◆ '+(S.base.fecha?"Reevaluación":"Prueba de despertar")+'</div><h2>'+(S.base.fecha?"Han pasado 4 semanas":"El Sistema necesita medirte")+'</h2>'+
+    '<p class="sub">'+(S.base.fecha?"Repite la prueba para recalcular tus cargas y ver cuánto has mejorado.":"Sin esto, las cargas son a ciegas. Hazlo descansado, con 2 min entre pruebas. Con rodillas apoyadas en las flexiones vale, apúntalo igual.")+'</p>'+
+    '<ol><li><b>Flexiones</b> seguidas hasta no poder más (con buena forma).</li><li><b>Sentadillas</b> en 60 segundos.</li><li><b>Plancha</b>: segundos que aguantas recto.</li></ol>'+
+    '<div class="grid" style="grid-template-columns:1fr 1fr 1fr"><input id="evFlex" type="number" inputmode="numeric" placeholder="Flexiones" min="0"><input id="evSent" type="number" inputmode="numeric" placeholder="Sentadillas" min="0"><input id="evPlan" type="number" inputmode="numeric" placeholder="Plancha s" min="0"></div>'+
+    '<div style="height:10px"></div><button class="btn" id="btnEval">Enviar evaluación al Sistema</button></div>':"";
+  // cierre del día
+  const nochef=!!S.noche[f];
+  $("#nocheCard").innerHTML='<div class="card"><div class="row sp"><div><div class="sysh" style="margin:0">◆ Cierre del día</div><p class="sub" style="margin-top:6px">'+(nochef?"Hecho. Descansa: el cuerpo cambia durmiendo.":"5 min guiados de respiración y estiramientos. Mejor antes de dormir.")+'</p></div>'+(nochef?'<span class="pill ok">✓</span>':'<button class="btn sm sec" data-noche="1" style="flex:0 0 auto">Iniciar</button>')+'</div></div>';
+  // ruta exterior
+  $("#rutaBox").innerHTML=ses.rutina==="exterior"?'<div class="ruta"><input type="number" inputmode="decimal" step="0.1" id="rutaKm" placeholder="Km recorridos" value="'+esc(ses.ruta?ses.ruta.km:"")+'"><input type="number" inputmode="numeric" id="rutaMin" placeholder="Minutos" value="'+esc(ses.ruta?ses.ruta.min:"")+'"><span class="tag">Ruta</span></div>':"";
   // modo sombra
   const nk=nocheClave(), sn=S.sombraNoche[nk], RI=ritualDeNoche(), abierta=sombraAbierta();
   $("#sombraCard").innerHTML='<div class="scard"><div class="sysh">◆ Modo sombra</div><div class="row sp" style="align-items:flex-start"><div><h2>'+(sn&&sn.hecho?"Ritual completado":abierta?"La noche te llama":"Se abre a las 21:00")+'</h2>'+
@@ -1515,6 +1762,19 @@ function pintarEstado(){
   $("#xpBar").style.width=Math.round(nv.en/nv.para*100)+"%";
   const max=Math.max(40,...STATS.map(([k])=>S.stats[k]))*1.15;
   $("#statsList").innerHTML=STATS.map(([k,ab,n])=>'<div class="st" title="'+n+'"><span class="k">'+ab+'</span><div class="bar"><i style="width:'+Math.round(S.stats[k]/max*100)+'%"></i></div><span class="v">'+Math.floor(S.stats[k])+'</span><button data-punto="'+k+'" '+(S.puntos>0?"":"disabled")+'>+</button></div>').join("");
+  const fa=faseActual(), semFa=fa.semana;
+  $("#caminoCard").innerHTML='<div class="sysh">◆ Camino del cazador</div><div class="row sp"><h2 style="font-size:18px">Fase '+(fa.i+1)+' · '+fa.n+'</h2><span class="pill cy">Semana '+semFa+'</span></div><p class="sub" style="margin-top:4px">'+fa.d+'</p>'+
+    '<div class="camino">'+FASES.map((x,i)=>'<div class="et'+(i<fa.i?" ok":i===fa.i?" on":"")+'"><i>'+(i<fa.i?"✓":i+1)+'</i><div><b>'+x.n+' · '+(i<3?"semanas "+(x.sem+1)+"–"+FASES[i+1].sem:"semana "+(x.sem+1)+" en adelante")+'</b><span>'+x.d+'</span><small>Resultado esperado: '+x.res+'</small></div></div>').join("")+'</div>'+
+    '<p class="sub" style="font-size:12px;margin-top:4px">Esto son meses, no semanas. El Sistema sube la carga cada lunes según lo que hayas completado; si fallas, la baja. Sin trampas: es lo que funciona.</p>';
+  const im=imc(), po=pesoObjetivo(), pa=S.peso.length?S.peso[S.peso.length-1].kg:null;
+  let ritmo=""; if(S.peso.length>=2){ const a=S.peso[0], z=S.peso[S.peso.length-1], dias=(desdeISO(z.f)-desdeISO(a.f))/86400000; if(dias>=7){ const porSem=(z.kg-a.kg)/(dias/7); ritmo=(porSem>0?"+":"")+porSem.toFixed(2)+" kg/semana"; } }
+  const faltan=(pa&&po&&pa>po)?Math.round(pa-po):0, semanas=faltan?Math.ceil(faltan/0.6):0;
+  $("#cuerpoCard").innerHTML='<div class="sysh">◆ Cuerpo</div><div class="kv"><div><b>'+(pa?pa+" kg":"—")+'</b><span>Peso actual</span></div><div><b>'+(po?po+" kg":"—")+'</b><span>Objetivo</span></div><div><b>'+(im?im.v:"—")+'</b><span>IMC'+(im?(im.v>=30?" · obesidad":im.v>=25?" · sobrepeso":" · normal"):"")+'</span></div><div><b>'+(ritmo||"—")+'</b><span>Ritmo real</span></div></div>'+
+    '<p class="sub" style="margin-top:10px">'+(faltan?"Te faltan "+faltan+" kg. A un ritmo sano de 0,5–0,7 kg por semana: unas <b>"+semanas+" semanas</b> ("+Math.round(semanas/4.3)+" meses). Con entrenamiento y comida en orden, se cumple.":"Apunta tu peso cada lunes en esta pestaña para ver el ritmo real.")+'</p>'+
+    '<p class="sub" style="font-size:12px;margin-top:6px">Próxima evaluación: '+(S.base.fecha?(evalPendiente()?"pendiente ahora":"en "+(28-Math.floor((desdeISO(hoyISO())-desdeISO(S.base.fecha))/86400000))+" días"):"pendiente (pestaña Misión)")+'.</p>';
+  const nv2=nivelDe(S.xp).n;
+  $("#habCard").innerHTML='<div class="sysh">◆ Habilidades</div><p class="sub">Cada nivel clave desbloquea una elección. Son permanentes: elige con cabeza.</p>'+HABILIDADES.map(t=>{ const eleg=t.op.find(o=>S.habilidades.includes(o.id)); const dispo=nv2>=t.nivel&&!eleg;
+    return '<div class="hab-tier"><div class="tt">Nivel '+t.nivel+(nv2<t.nivel?" · bloqueado":eleg?" · elegida":" · elige una")+'</div><div class="hab-grid">'+t.op.map(o=>'<div class="hab'+(S.habilidades.includes(o.id)?" on":dispo?" dispo":"")+'" data-hab="'+o.id+'"><div class="i">'+o.ic+'</div><b>'+o.n+'</b><span>'+o.d+'</span></div>').join("")+'</div></div>'; }).join("");
   $("#ejercitoCard").innerHTML='<div class="sysh">◆ Ejército de sombras</div><div class="row sp"><h2 style="font-size:17px">'+S.sombras.length+' sombra'+(S.sombras.length===1?"":"s")+'</h2><span class="pill" style="color:#c4a6ff">XP +'+Math.round(bonusSombras()*100)+' %</span></div>'+
     (S.sombras.length?'<div class="ejercito">'+S.sombras.slice().reverse().slice(0,24).map(x=>'<span>'+x.ic+' '+esc(x.n)+'<b>'+esc(x.r)+'</b></span>').join("")+'</div>':'<p class="sub" style="margin-top:6px">Realiza rituales nocturnos (21:00–05:00) en la pestaña Misión. Cada sombra extraída da +2 % de XP permanente, hasta +30 %.</p>');
   $("#sRacha").textContent=racha(); $("#sMejor").textContent=t.mejor; $("#sTotal").textContent=t.n;
@@ -1565,6 +1825,8 @@ function pintarPuertas(){
 const AJ={clase:null,dif:null};
 function pintarAjustes(){
   if(!AJ.clase) AJ.clase=S.perfil.clase; if(!AJ.dif) AJ.dif=S.perfil.dificultad;
+  $("#aAltura").value=S.perfil.altura||""; $("#aEdad").value=S.perfil.edad||""; $("#aPesoObj").value=S.perfil.pesoObjetivo||""; $("#aSexo").value=S.perfil.sexo||"h";
+  $("#alEntreno").value=S.alarmas.entreno; $("#alNoche").value=S.alarmas.noche; $("#btnAlarmas").textContent=S.alarmas.on?"Activadas":"Desactivadas";
   $("#aNombre").value=S.perfil.nombre||""; $("#aNivel").value=S.perfil.nivel; $("#aObjetivo").value=S.perfil.objetivo; $("#aDias").value=S.perfil.dias;
   $("#aClase").innerHTML=claseGridHTML(AJ.clase); $("#aDif").innerHTML=difGridHTML(AJ.dif); $("#aDifTxt").textContent=DIFICULTADES[AJ.dif].d+" XP ×"+DIFICULTADES[AJ.dif].xp+", castigo ×"+DIFICULTADES[AJ.dif].pen+".";
   $("#btnVoz").textContent=S.ajustes.voz?"Activada":"Desactivada"; $("#btnVozSis").textContent=S.ajustes.vozSis?"Activada":"Desactivada";
@@ -1578,6 +1840,9 @@ function sistemaDiario(){
   const f=hoyISO(), m=misionDe(f); comprobarMision();
   if(!S.sisVisto[f]){ S.sisVisto[f]=true; guardar();
     sysMostrar({h:"◆ Misión diaria ◆",t:m.pen?"Misión diaria · Penalizada":"Misión diaria",tipo:m.pen?"bad":"",voz:false,tx:m.items.map(i=>"• "+i.t).join("\n")+"\n\nLímite: 23:59 · Recompensa: +"+m.xp+" XP"+(S.ajustes.pen?"\nSi no se completa, se aplicará una penalización.":"")}); }
+  actualizarProgresion();
+  if(evalPendiente()&&S.base.fecha&&!S.sisVisto["eval-"+f]){ S.sisVisto["eval-"+f]=true; guardar(); sysMostrar({h:"◆ Evaluación ◆",t:"Reevaluación",tipo:"",tx:"Han pasado 4 semanas desde tu última prueba. Repítela hoy en la pestaña Misión: así verás cuánto has mejorado y el Sistema recalculará tus cargas."}); }
+  if(hab("ojo_sistema")&&sampleIA&&new Date().getDay()===1) informeSemanal(false);
   mazGenerar(); puertaActual(); comprobarAscenso();
   const ev=eventoDe();
   if(ev.abierto&&!(ev.reg&&ev.reg.hecha)&&!S.sisVisto["evento-"+ev.clave]){ S.sisVisto["evento-"+ev.clave]=true; guardar();
@@ -1591,7 +1856,7 @@ function sistemaDiario(){
 }
 /* ================= COACH IA ================= */
 function contextoCoach(){
-  const t=totales(), f=hoyISO(), ses=sesionDe(f), rg=rango();
+  const t=totales(), f=hoyISO(), ses=sesionDe(f);
   const hist=Object.keys(S.sesiones).filter(completada).sort().reverse().slice(0,7).map(k=>{const s=S.sesiones[k],v=volumenSesion(s);return k+": "+s.nombre.split(" — ")[0]+", "+v.series+" series, "+Math.round(v.kg)+" kg, "+(s.dur||0)+" min"+(s.notas?", nota: «"+s.notas+"»":"");}).join("\n") || "ninguno todavía";
   const rec=records().slice(0,8).map(([n,r])=>n+": "+(r.t==="tiempo"?fmtT(r.v):(r.p>0?r.p+" kg × "+r.v:r.v+" reps"))).join("; ")||"ninguno";
   const hoy=ses.ejercicios.map(e=>"- "+e.n+" ("+e.m+"): "+e.obj.s+"×"+(e.t==="tiempo"?fmtT(e.obj.r):e.obj.r+" reps")+", hechas "+e.sets.filter(s=>s.ok).length+"/"+e.sets.length).join("\n");
@@ -1599,12 +1864,13 @@ function contextoCoach(){
   const m=misionDe(f), nv=nivelDe(S.xp);
   return "CAZADOR: "+S.perfil.nombre+", clase "+CLASES[S.perfil.clase].n+", "+RANGOS_CAZADOR[rangoIdx()].n+", nivel "+nv.n+", dificultad "+DIFICULTADES[S.perfil.dificultad].n+", stats FUE "+Math.floor(S.stats.fue)+" AGI "+Math.floor(S.stats.agi)+" VIT "+Math.floor(S.stats.vit)+" RES "+Math.floor(S.stats.res)+" VOL "+Math.floor(S.stats.vol)+".\n"+
     "MISIÓN DIARIA: "+m.items.map(i=>i.t+(i.ok?" (hecho)":"")).join("; ")+(m.hecha?" — completada":"")+".\n"+
-    "PERFIL: "+S.perfil.nombre+", nivel "+S.perfil.nivel+", objetivo "+S.perfil.objetivo+", "+S.perfil.dias+" días/semana, peso "+peso+".\n"+
-    "ESTADO: rango "+rg.r.n+" ("+S.xp+" XP), racha "+racha()+" días, "+t.n+" entrenos, "+t.series+" series, "+Math.round(t.kg)+" kg movidos.\n"+
+    "PERFIL: "+S.perfil.nombre+", forma "+S.perfil.nivel+", objetivo "+S.perfil.objetivo+", "+S.perfil.dias+" días/semana, peso "+peso+(S.perfil.altura?", altura "+S.perfil.altura+" cm":"")+(S.perfil.edad?", "+S.perfil.edad+" años":"")+(imc()?", IMC "+imc().v:"")+(pesoObjetivo()?", peso objetivo "+pesoObjetivo()+" kg":"")+".\n"+
+    "FASE: "+faseActual().n+" (semana "+faseActual().semana+"). EVALUACIÓN: "+(S.base.fecha?"flexiones máx "+S.base.flex+", sentadillas/60s "+S.base.sent+", plancha "+S.base.plancha+" s ("+S.base.fecha+")":"pendiente")+". PROGRESIÓN: "+Object.entries(S.prog).map(([k,v])=>k+" ×"+v.toFixed(2)).join(", ")+".\n"+
+    "ESTADO: "+RANGOS_CAZADOR[rangoIdx()].n+" ("+S.xp+" XP), racha "+racha()+" días, "+t.n+" entrenos, "+t.series+" series, "+Math.round(t.kg)+" kg movidos.\n"+
     "HOY ("+DIAS_LARGO[desdeISO(f).getDay()]+"): "+ses.nombre+(ses.completada?" (completado)":"")+"\n"+hoy+"\n"+
     "RÉCORDS: "+rec+"\nÚLTIMOS ENTRENOS:\n"+hist;
 }
-const INSTR="Eres EL SISTEMA, la entidad que guía a un cazador en su entrenamiento, al estilo de un sistema de progresión de un manhwa de niveles. Tono: frío, formal, preciso, imperativo, con autoridad; nunca cursi ni con emojis. Empieza a veces con etiquetas entre corchetes como [Aviso], [Análisis] o [Orden]. Habla en segunda persona y en español, texto plano sin markdown. Frases cortas. Usa los datos reales del cazador (nivel, rango, stats, misión, historial). Máximo 120 palabras salvo que pidan un plan. Eres exigente pero justo: reconoce el progreso con sobriedad. Nunca diagnostiques lesiones: ante dolor agudo ordena parar y consultar a un profesional, y propón una alternativa segura. Termina siempre con una orden concreta para hoy.";
+const INSTR="Eres EL SISTEMA, con capacidad de ACTUAR sobre la app mediante herramientas cuando el cazador lo pide (cambiar el entrenamiento de hoy, ajustar series o repeticiones de un ejercicio, asignar una misión secundaria, registrar el peso, cambiar la dificultad). Si el cazador pide bajar o subir la carga, USA la herramienta y confirma el cambio. Sé realista: la pérdida de grasa sana es 0,5-1 kg por semana, el cambio visible tarda 2-3 meses, la fuerza sube poco a poco. Nunca propongas dietas extremas ni ayunos agresivos: déficit moderado, proteína en cada comida, verdura, agua, dormir.  la entidad que guía a un cazador en su entrenamiento, al estilo de un sistema de progresión de un manhwa de niveles. Tono: frío, formal, preciso, imperativo, con autoridad; nunca cursi ni con emojis. Empieza a veces con etiquetas entre corchetes como [Aviso], [Análisis] o [Orden]. Habla en segunda persona y en español, texto plano sin markdown. Frases cortas. Usa los datos reales del cazador (nivel, rango, stats, misión, historial). Máximo 120 palabras salvo que pidan un plan. Eres exigente pero justo: reconoce el progreso con sobriedad. Nunca diagnostiques lesiones: ante dolor agudo ordena parar y consultar a un profesional, y propón una alternativa segura. Termina siempre con una orden concreta para hoy.";
 
 function coachLocal(msg){
   const m=msg.toLowerCase(), f=hoyISO(), ses=sesionDe(f), t=totales();
@@ -1618,6 +1884,8 @@ function coachLocal(msg){
   return "[Estado] "+RANGOS_CAZADOR[rangoIdx()].n+", nivel "+nivelDe(S.xp).n+". Entrenamiento asignado: "+ses.nombre.split(" — ")[0]+" ("+duracionEstimada(ses)+" min). Pregunta por un ejercicio, por tu progreso o por una versión corta. El Sistema completo con IA responde cuando abres la app desde su enlace online.";
 }
 function pintarChat(){
+  const sem=inicioSemana(hoyISO()), inf=S.informes[sem];
+  $("#informeCard").innerHTML='<div class="row sp" style="margin:4px 0 8px"><span class="eyebrow" style="margin:0">Informe semanal</span><button class="btn sm sec" id="btnInforme">'+(inf?"Regenerar":"Informe semanal")+'</button></div>'+(inf?'<div class="informe">'+esc(inf)+'</div>':'');
   const c=$("#chat");
   if(!S.chat.length){ const ses=sesionDe(hoyISO()); c.innerHTML='<div class="msg a">[Sistema] Cazador '+esc(S.perfil.nombre)+', '+esc(RANGOS_CAZADOR[rangoIdx()].n)+'. Entrenamiento asignado: '+esc(ses.nombre.split(" — ")[0])+' (≈'+duracionEstimada(ses)+' min). Habla.</div>'; return; }
   c.innerHTML=S.chat.map(m=>'<div class="msg '+(m.r==="u"?"u":"a")+'">'+esc(m.t)+'</div>').join("");
@@ -1634,9 +1902,13 @@ async function preguntarCoach(msg){
     try{
       const previos=S.chat.slice(-9,-1).map(m=>({role:m.r==="u"?"user":"assistant",content:m.t}));
       const turnos=[...previos,{role:"user",content:INSTR+"\n\nDATOS DEL USUARIO:\n"+contextoCoach()+"\n\nMENSAJE DEL USUARIO: "+msg}];
-      const res=await sampleIA(turnos,{onText:({text})=>{ burbuja.classList.remove("think"); burbuja.textContent=text; c.scrollTop=c.scrollHeight; },modelTier:"default",cache:false});
+      if(/informe semanal/i.test(msg)){ burbuja.remove(); coachOcupado=false; await informeSemanal(true); return; }
+      let caps=null; try{ caps=await sampleIA.limits(); }catch(e){}
+      const opts={onText:({text})=>{ burbuja.classList.remove("think"); burbuja.textContent=text; c.scrollTop=c.scrollHeight; },modelTier:"default",cache:false};
+      if(caps&&caps.tools) opts.tools=herramientasIA();
+      const res=await sampleIA(turnos,opts);
       respuesta=(res&&res.text)||burbuja.textContent||"";
-    }catch(e){ respuesta=(e&&e.text)||""; if(!respuesta){ respuesta=coachLocal(msg); if(e&&e.code==="rate_limited") toast("El coach IA está saturado, respondo en modo local"); } }
+    }catch(e){ console.warn("Sistema IA:",e); respuesta=(e&&e.text)||""; if(!respuesta){ respuesta=coachLocal(msg); if(e&&e.code==="rate_limited") toast("El Sistema está saturado, respondo en modo local"); } }
   } else respuesta=coachLocal(msg);
   burbuja.remove();
   S.chat.push({r:"a",t:respuesta.trim()}); S.chat=S.chat.slice(-30); guardar(); pintarChat();
@@ -1665,6 +1937,9 @@ const G={on:false,i:0,j:0,c:0,modo:"ej",soloCal:false,fase:"",timer:null,fin:0,t
 function guiaIniciar(soloCal){
   const ses=sesionDe(hoyISO()); G.i=0; G.j=0; G.c=0; G.soloCal=soloCal===true;
   G.modo=(G.soloCal||!calHecho(ses))&&(ses.cal||[]).length?"cal":"ej";
+  G.lista=ses.cal||[]; G.listaNombre="CALENTAMIENTO";
+  G.marcar=i=>{ ses.cal[i].ok=true; if(calHecho(ses)&&!ses.calXP){ ses.calXP=true; darXP(Math.round(XP.cal*xpMult()),"Calentamiento"); } guardar(); comprobarMision(); };
+  G.alAcabar=()=>{ if(G.soloCal){ hablar("Calentamiento terminado. Ahora, a entrenar."); toast("Calentamiento completo 🔥"); guiaSalir(); return; } G.modo="ej"; hablar("Calentamiento terminado. Empieza el entreno."); guiaPrep(); };
   if(G.modo==="cal"){ G.c=ses.cal.findIndex(c=>!c.ok); if(G.c<0||G.soloCal) G.c=0; }
   outer: for(let i=0;i<ses.ejercicios.length;i++) for(let j=0;j<ses.ejercicios[i].sets.length;j++) if(!ses.ejercicios[i].sets[j].ok){ G.i=i; G.j=j; break outer; }
   G.on=true; $("#guia").classList.add("on"); document.body.style.overflow="hidden";
@@ -1674,30 +1949,31 @@ function guiaIniciar(soloCal){
   if(G.modo==="cal") calPrep(); else guiaPrep();
 }
 function calPrep(){
-  clearInterval(G.timer); const ses=sesionDe(hoyISO()), c=ses.cal[G.c];
+  clearInterval(G.timer); const L=G.lista, c=L[G.c];
   G.fase="calprep";
-  $("#gPaso").textContent="CALENTAMIENTO "+(G.c+1)+"/"+ses.cal.length; $("#gNombre").textContent=c.n; $("#gTip").textContent=c.tip; $("#gObj").textContent=c.r+" segundos";
-  $("#gFase").innerHTML=ses.cal.map((x,k)=>'<i class="'+(x.ok?"ok":k===G.c?"on":"")+'"></i>').join(""); registrarLienzo($("#gCanvas"),c.a,true);
+  $("#gPaso").textContent=G.listaNombre+" "+(G.c+1)+"/"+L.length; $("#gNombre").textContent=c.n; $("#gTip").textContent=c.tip; $("#gObj").textContent=c.r+" segundos";
+  $("#gFase").innerHTML=L.map((x,k)=>'<i class="'+(x.ok?"ok":k===G.c?"on":"")+'"></i>').join(""); registrarLienzo($("#gCanvas"),c.a,true);
   $("#gEyebrow").textContent="Prepárate"; $("#gBig").className="big num"; $("#gIns").classList.add("hidden");
   $("#gHecho").textContent="Empezar ya"; $("#gSaltar").textContent="Saltar";
   hablar(c.n+". "+c.r+" segundos.");
   guiaCuenta(3,calSerie,n=>{ $("#gBig").textContent=n; });
 }
 function calSerie(){
-  const ses=sesionDe(hoyISO()), c=ses.cal[G.c];
+  const c=G.lista[G.c];
   G.fase="calserie"; $("#gEyebrow").textContent="Calentando"; $("#gHecho").textContent="Terminar antes"; hablar("¡Ya!"); vibrar(60);
   guiaCuenta(c.r,()=>{ bip(); calMarcar(); },q=>{ $("#gBig").textContent=q; if(q===5) hablar("Cinco segundos."); });
 }
-function calMarcar(){
-  const ses=sesionDe(hoyISO()); ses.cal[G.c].ok=true;
-  if(calHecho(ses)&&!ses.calXP){ ses.calXP=true; darXP(Math.round(XP.cal*xpMult()),"Calentamiento"); }
-  guardar(); comprobarMision(); calSiguiente();
-}
-function calSiguiente(){
-  const ses=sesionDe(hoyISO());
-  if(G.c+1<ses.cal.length){ G.c++; calPrep(); return; }
-  if(G.soloCal){ hablar("Calentamiento terminado. Ahora, a entrenar."); toast("Calentamiento completo 🔥"); guiaSalir(); return; }
-  G.modo="ej"; hablar("Calentamiento terminado. Empieza el entreno."); guiaPrep();
+function calMarcar(){ G.lista[G.c].ok=true; if(G.marcar) G.marcar(G.c); calSiguiente(); }
+function calSiguiente(){ if(G.c+1<G.lista.length){ G.c++; calPrep(); return; } if(G.alAcabar) G.alAcabar(); else guiaSalir(); }
+function nocheIniciar(){
+  const f=hoyISO();
+  G.i=0; G.j=0; G.c=0; G.soloCal=true; G.modo="cal"; G.lista=NOCHE.map(x=>Object.assign({ok:false},x)); G.listaNombre="CIERRE DEL DÍA";
+  G.marcar=null;
+  G.alAcabar=()=>{ S.noche[f]=true; guardar(); const xp=Math.round(15*xpMult()); darXP(xp,"Cierre del día"); comprobarMision(); guiaSalir();
+    sysMostrar({t:"Día cerrado",tipo:"ok",voz:true,tx:"Recuperación registrada. +"+xp+" XP. Duerme 7–8 horas: ahí es donde el cuerpo cambia."}); pintarTodo(); };
+  G.on=true; $("#guia").classList.add("on"); document.body.style.overflow="hidden";
+  $("#gModo").textContent="Cierre del día"; $("#gCanvas").classList.remove("hidden"); $("#gJefe").classList.add("hidden"); $("#gTareas").classList.add("hidden"); $("#gRondas").classList.add("hidden"); $("#gHecho").disabled=false;
+  hablar("Cierre del día. Cinco minutos. Respira."); calPrep();
 }
 function guiaSalir(){ clearInterval(G.timer); G.timer=null; G.on=false; $("#guia").classList.remove("on"); document.body.style.overflow=""; try{ speechSynthesis.cancel(); }catch(e){} pintarHoy(); pintarCabecera(); }
 function guiaCabecera(){
@@ -1802,11 +2078,12 @@ function eventos(){
   $("#oDif").addEventListener("click",ev=>{ const b=ev.target.closest("[data-dif]"); if(!b) return; OB.dif=b.dataset.dif; $("#oDif").innerHTML=difGridHTML(OB.dif); $("#oDifTxt").textContent=DIFICULTADES[OB.dif].d; });
   $("#oGo").addEventListener("click",()=>{
     const nombre=$("#oNombre").value.trim(); if(!nombre){ $("#oNombre").focus(); toast("Escribe tu nombre para despertar"); return; }
-    S={v:4,perfil:{nombre,nivel:$("#oNivel").value,objetivo:$("#oObjetivo").value,dias:parseInt($("#oDias").value,10),creado:hoyISO(),clase:OB.clase,dificultad:OB.dif},sesiones:{},peso:[],override:{}};
+    S={v:5,perfil:{nombre,nivel:$("#oNivel").value,objetivo:$("#oObjetivo").value,dias:parseInt($("#oDias").value,10),creado:hoyISO(),clase:OB.clase,dificultad:OB.dif,altura:parseInt($("#oAltura").value,10)||null,edad:parseInt($("#oEdad").value,10)||null},sesiones:{},peso:[],override:{}};
     normalizar(); S.stats[CLASES[OB.clase].st]+=3;
     const kg=parseFloat($("#oPeso").value); if(kg>0) S.peso.push({f:hoyISO(),kg:Math.round(kg*10)/10});
     S.xp=50; S.xpLog=[{f:hoyISO(),d:50,m:"Despertar"}]; guardar();
     sysMostrar({t:"Has despertado",tipo:"gold",flash:true,voz:true,tx:"Cazador "+nombre+". Clase: "+CLASES[OB.clase].n+". Dificultad: "+DIFICULTADES[OB.dif].n+". Nivel 1, rango E.\nEl Sistema te asignará una misión cada día. Cúmplela, o asume las consecuencias."});
+    sysMostrar({h:"◆ Evaluación ◆",t:"Prueba de despertar",tipo:"",tx:"Antes de asignar cargas, el Sistema necesita medirte: flexiones máximas, sentadillas en 60 segundos y plancha. Está en la pestaña Misión. Sin trampas: la carga se calcula a partir de ahí."});
     abrirApp(); if(SYNC.db) syncSubir(true);
   });
   $$("nav button").forEach(b=>b.addEventListener("click",()=>irA(b.dataset.tab)));
@@ -1818,6 +2095,18 @@ function eventos(){
   // misión diaria y mazmorra
   $("#misionCard").addEventListener("click",ev=>{ const b=ev.target.closest("[data-mis]"); if(!b) return; const m=misionDe(hoyISO()), it=m.items[+b.dataset.mis]; if(it.auto||m.hecha) return; it.ok=!it.ok; guardar(); comprobarMision(); pintarHoy(); pintarCabecera(); });
   $("#mazCard").addEventListener("click",ev=>{ if(ev.target.closest("[data-maz]")) mazEntrar(); });
+  $("#evalCard").addEventListener("click",ev=>{ if(!ev.target.closest("#btnEval")) return; const fl=parseInt($("#evFlex").value,10), se=parseInt($("#evSent").value,10), pl=parseInt($("#evPlan").value,10);
+    if(!(fl>=0&&se>=0&&pl>=0)||isNaN(fl)||isNaN(se)||isNaN(pl)){ toast("Rellena las tres pruebas (puede ser 0)"); return; } guardarEvaluacion(Math.max(1,fl),Math.max(1,se),Math.max(5,pl)); });
+  $("#nocheCard").addEventListener("click",ev=>{ if(ev.target.closest("[data-noche]")) nocheIniciar(); });
+  $("#rutaBox").addEventListener("input",()=>{ const ses=sesionDe(hoyISO()); ses.ruta={km:parseFloat($("#rutaKm").value)||0,min:parseInt($("#rutaMin").value,10)||0}; guardar(); });
+  $("#habCard").addEventListener("click",ev=>{ const h=ev.target.closest(".hab.dispo"); if(h) elegirHabilidad(h.dataset.hab); });
+  $("#informeCard").addEventListener("click",ev=>{ if(ev.target.closest("#btnInforme")) informeSemanal(true); });
+  $("#btnAlarmas").addEventListener("click",()=>{ S.alarmas.on=!S.alarmas.on; S.alarmas.entreno=$("#alEntreno").value||"19:00"; S.alarmas.noche=$("#alNoche").value||"22:00"; guardar(); pintarAjustes(); toast(S.alarmas.on?"Alarmas activadas (con la app abierta)":"Alarmas desactivadas"); });
+  $("#alEntreno").addEventListener("change",()=>{ S.alarmas.entreno=$("#alEntreno").value||"19:00"; guardar(); });
+  $("#alNoche").addEventListener("change",()=>{ S.alarmas.noche=$("#alNoche").value||"22:00"; guardar(); });
+  $("#btnNotif").addEventListener("click",pedirNotificaciones);
+  $("#btnIcs").addEventListener("click",descargarICS);
+  setInterval(alarmaTick,20000);
   $("#sombraCard").addEventListener("click",ev=>{ if(ev.target.closest("[data-sombra]")) sombraIniciar(); });
   $("#gRonda").addEventListener("click",sombraRonda);
   $("#eventoCard").addEventListener("click",ev=>{ if(ev.target.closest("[data-evento]")) eventoEntrar(); });
@@ -1876,6 +2165,7 @@ function eventos(){
     const f=hoyISO(), cambia=AJ.clase!==S.perfil.clase||AJ.dif!==S.perfil.dificultad||$("#aNivel").value!==S.perfil.nivel||parseInt($("#aDias").value,10)!==S.perfil.dias;
     S.perfil.nombre=$("#aNombre").value.trim()||S.perfil.nombre; S.perfil.nivel=$("#aNivel").value; S.perfil.objetivo=$("#aObjetivo").value; S.perfil.dias=parseInt($("#aDias").value,10);
     S.perfil.clase=AJ.clase; S.perfil.dificultad=AJ.dif;
+    S.perfil.altura=parseInt($("#aAltura").value,10)||S.perfil.altura||null; S.perfil.edad=parseInt($("#aEdad").value,10)||S.perfil.edad||null; S.perfil.pesoObjetivo=parseFloat($("#aPesoObj").value)||null; S.perfil.sexo=$("#aSexo").value;
     if(cambia&&S.sesiones[f]&&!S.sesiones[f].completada&&!S.override[f]){ delete S.sesiones[f]; }
     if(cambia&&S.misiones[f]&&!S.misiones[f].hecha){ delete S.misiones[f]; misionDe(f); }
     guardar(); pintarTodo(); sysMostrar({t:"Estado actualizado",tx:"Clase: "+CLASES[S.perfil.clase].n+". Dificultad: "+DIFICULTADES[S.perfil.dificultad].n+". El Sistema ha recalculado tu entrenamiento."});

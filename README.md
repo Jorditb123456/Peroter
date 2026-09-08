@@ -8,6 +8,37 @@ de ascenso, títulos y ventanas del Sistema con voz y sonido. Debajo de todo eso
 demostraciones animadas, sesión guiada por voz, coach con IA y sincronización
 entre dispositivos. Funciona en el móvil y en el ordenador, sin instalar nada.
 
+## Realismo: el motor de carga
+
+- **Prueba de despertar.** Antes de asignar cargas, el Sistema te mide: flexiones
+  máximas, sentadillas en 60 s y plancha. De ahí salen las repeticiones de cada
+  ejercicio (p. ej. 8 flexiones máximas → 4 por serie). Se repite cada 4 semanas y
+  compara con la anterior.
+- **Fases.** Cimientos (sem. 1–4: 2 series, máx. 4 días), Construcción (5–12: 3
+  series, 5 días), Forja (13–24: 4 series, 6 días) y Atleta (25+). Cada fase
+  indica un resultado esperado honesto: esto son meses.
+- **Progresión automática.** Cada lunes el Sistema mira qué completaste de verdad
+  la semana anterior por patrón (empuje, sentadilla, core, tirón, bisagra, cardio):
+  ≥80 % de series → +8 % de carga; <50 % → −5 %.
+- **Carrera progresiva.** El día de exterior sigue una progresión de caminar a
+  correr (3 min andando/1 trotando … hasta 30–35 min continuos en 6 meses), con
+  banco y barra del parque y registro de km.
+- **Misión diaria real.** Entrenamiento, calentamiento, pasos (6.000 → 10.000
+  según la fase), 2 L de agua, sin azúcar añadido ni ultraprocesados, extras
+  pequeños y el cierre del día. En días de descanso: caminar 30 min.
+- **Cierre del día.** 5 minutos guiados de respiración y estiramientos.
+- **Cuerpo.** Peso, objetivo (IMC 24 si no lo fijas), IMC, ritmo real de pérdida
+  y semanas estimadas a 0,5–0,7 kg/semana.
+- **Habilidades.** A los niveles 3, 6, 10 y 15 eliges una de dos con efecto real
+  (descansos más cortos, perdón de una misión semanal, penalizaciones a la mitad,
+  XP extra en exterior, puntos extra por nivel, informe automático…).
+- **Alarmas.** Hora de entrenar, cierre del día y aviso de misión a las 22:00,
+  con ventana, sonido y vibración con la app abierta; notificaciones si el
+  navegador lo permite; archivo de calendario descargable.
+- **IA que actúa.** El Sistema puede cambiar tu entrenamiento de hoy, subir o bajar
+  series y repeticiones de un ejercicio, asignarte una misión secundaria,
+  registrar tu peso y cambiar la dificultad, y redacta un informe semanal.
+
 ## El Sistema
 
 - **Despertar.** Eliges nombre, clase (Luchador, Asesino, Tanque, Monje: cada
