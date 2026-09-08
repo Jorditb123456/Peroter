@@ -1,14 +1,166 @@
-v0 by Vercel.
-@see https://v0.dev/t/OjVVKGiqwsC 
-Documentation: https://v0.dev/docs  */ import Link from "next/link" import { Button } from "@/components/ui/button" import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuItem } from "@/components/ui/dropdown-menu" import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar" import { ScrollArea } from "@/components/ui/scroll-area" import { Badge } from "@/components/ui/badge" import { Textarea } from "@/components/ui/textarea"
-export default function Component() { return ( <div className="flex min-h-screen w-full flex-col bg-black text-white"><header className="sticky top-0 z-10 flex h-14 items-center justify-between border-b border-white/10 bg-black/80 px-4 backdrop-blur-md sm:h-16 sm:px-6"><Link href="#" className="flex items-center gap-2 font-semibold text-blue-500" prefetch={false}><OctagonIcon className="h-6 w-6 text-blue-500" /><span> Polígono Chat </span></Link><div className="flex items-center gap-2"><Button variant="ghost" size="icon" className="rounded-full text-blue-500 hover:bg-blue-500/10"><SearchIcon className="h-5 w-5" /><span className="sr-only"> Buscar </span></Button><Button variant="ghost" size="icon" className="rounded-full text-blue-500 hover:bg-blue-500/10"><PlusIcon className="h-5 w-5" /><span className="sr-only"> Crear Grupo </span></Button><DropdownMenu><DropdownMenuTrigger asChild><Button variant="ghost" size="icon" className="rounded-full text-blue-500 hover:bg-blue-500/10"><Avatar className="h-8 w-8 border-2 border-white/50"><AvatarImage src="/placeholder-user.jpg" alt="Avatar" /><AvatarFallback> AC </AvatarFallback></Avatar></Button></DropdownMenuTrigger><DropdownMenuContent align="end" className="bg-card text-card-foreground"><DropdownMenuLabel> Mi Cuenta </DropdownMenuLabel><DropdownMenuSeparator /><DropdownMenuItem className="hover:bg-muted"> Configuración </DropdownMenuItem><DropdownMenuItem className="hover:bg-muted"> Cerrar Sesión </DropdownMenuItem></DropdownMenuContent></DropdownMenu></div></header><main className="flex-1 grid grid-cols-1 md:grid-cols-[300px_1fr_300px]"><div className="border-r border-white/10 bg-black/80 backdrop-blur-md"><div className="flex h-14 items-center justify-between border-b border-white/10 px-4 sm:h-16 sm:px-6"><h2 className="text-lg font-bold tracking-wider text-blue-500"> Proyectos e Ideas </h2><Button variant="ghost" size="icon" className="rounded-full text-blue-500 hover:bg-blue-500/10"><PlusIcon className="h-5 w-5" /><span className="sr-only"> Nuevo Proyecto </span></Button></div><ScrollArea className="flex-1 overflow-auto"><div className="grid gap-4 p-4 sm:p-6"><Link href="#" className="flex items-center gap-3 rounded-lg bg-black/50 p-3 transition-colors hover:bg-black/70" prefetch={false} ><Avatar className="h-10 w-10 border-2 border-white/50"><AvatarImage src="/placeholder-user.jpg" alt="Avatar" /><AvatarFallback> AC </AvatarFallback></Avatar><div className="flex-1 truncate"><h3 className="font-medium text-blue-500"> Emprendedores de Polígono </h3><p className="text-sm text-white/80 truncate"> ¿Alguien tiene una idea de negocio que quiera compartir? </p></div><Badge variant="outline" className="shrink-0 border-blue-500 text-blue-500"> 8 </Badge></Link><Link href="#" className="flex items-center gap-3 rounded-lg bg-black/50 p-3 transition-colors hover:bg-black/70" prefetch={false} ><Avatar className="h-10 w-10 border-2 border-white/50"><AvatarImage src="/placeholder-user.jpg" alt="Avatar" /><AvatarFallback> AC </AvatarFallback></Avatar><div className="flex-1 truncate"><h3 className="font-medium text-blue-500"> Diseñadores de Polígono </h3><p className="text-sm text-white/80 truncate"> ¿Alguien tiene un proyecto de diseño que quiera compartir? </p></div><Badge variant="outline" className="shrink-0 border-blue-500 text-blue-500"> 15 </Badge></Link><Link href="#" className="flex items-center gap-3 rounded-lg bg-black/50 p-3 transition-colors hover:bg-black/70" prefetch={false} ><Avatar className="h-10 w-10 border-2 border-white/50"><AvatarImage src="/placeholder-user.jpg" alt="Avatar" /><AvatarFallback> AC </AvatarFallback></Avatar><div className="flex-1 truncate"><h3 className="font-medium text-blue-500"> Desarrolladores de Polígono </h3><p className="text-sm text-white/80 truncate"> ¿Alguien tiene un proyecto de código que quiera compartir? </p></div><Badge variant="outline" className="shrink-0 border-blue-500 text-blue-500"> 12 </Badge></Link></div></ScrollArea></div><div className="flex flex-col"><div className="flex h-14 items-center justify-between border-b border-white/10 bg-black/80 px-4 backdrop-blur-md sm:h-16 sm:px-6"><h2 className="text-lg font-bold tracking-wider text-blue-500"> Emprendedores de Polígono </h2><div className="flex items-center gap-2"><Button variant="ghost" size="icon" className="rounded-full text-white hover:bg-white/10"><PaperclipIcon className="h-5 w-5" /><span className="sr-only"> Adjuntar Archivo </span></Button><Button variant="ghost" size="icon" className="rounded-full text-white hover:bg-white/10"><SmileIcon className="h-5 w-5" /><span className="sr-only"> Agregar Emoji </span></Button><Button variant="ghost" size="icon" className="rounded-full text-white hover:bg-white/10"><MicIcon className="h-5 w-5" /><span className="sr-only"> Enviar Audio </span></Button></div></div><ScrollArea className="flex-1 overflow-auto"><div className="grid gap-4 p-4 sm:p-6"><div className="flex items-start gap-3"><Avatar className="h-10 w-10 border-2 border-white/50"><AvatarImage src="/placeholder-user.jpg" alt="Avatar" /><AvatarFallback> AC </AvatarFallback></Avatar><div className="flex-1 rounded-lg bg-black/50 p-3"><p> Tengo una idea de negocio para un servicio de diseño de logotipos. ¿Alguien está interesado en colaborar? </p><div className="mt-2 flex justify-end gap-2"><Button variant="ghost" size="icon" className="rounded-full text-white hover:bg-white/10"><HeartIcon className="h-5 w-5" /><span className="sr-only"> Me Gusta </span></Button><Button variant="ghost" size="icon" className="rounded-full text-white hover:bg-white/10"><MessageCircleIcon className="h-5 w-5" /><span className="sr-only"> Comentar </span></Button><Button variant="ghost" size="icon" className="rounded-full text-white hover:bg-white/10"><ShareIcon className="h-5 w-5" /><span className="sr-only"> Compartir </span></Button></div></div></div><div className="flex items-start gap-3"><Avatar className="h-10 w-10 border-2 border-white/50"><AvatarImage src="/placeholder-user.jpg" alt="Avatar" /><AvatarFallback> AC </AvatarFallback></Avatar><div className="flex-1 rounded-lg bg-black/50 p-3"><p> Estoy trabajando en una aplicación de seguimiento de proyectos. ¿Alguien está interesado en probarla y dar retroalimentación? </p><div className="mt-2 flex justify-end gap-2"><Button variant="ghost" size="icon" className="rounded-full text-white hover:bg-white/10"><HeartIcon className="h-5 w-5" /><span className="sr-only"> Me Gusta </span></Button><Button variant="ghost" size="icon" className="rounded-full text-white hover:bg-white/10"><MessageCircleIcon className="h-5 w-5" /><span className="sr-only"> Comentar </span></Button><Button variant="ghost" size="icon" className="rounded-full text-white hover:bg-white/10"><ShareIcon className="h-5 w-5" /><span className="sr-only"> Compartir </span></Button></div></div></div><div className="flex items-start gap-3"><Avatar className="h-10 w-10 border-2 border-white/50"><AvatarImage src="/placeholder-user.jpg" alt="Avatar" /><AvatarFallback> AC </AvatarFallback></Avatar><div className="flex-1 rounded-lg bg-black/50 p-3"><p> Estoy buscando socios para un proyecto de desarrollo web. ¿Alguien está interesado en colaborar? </p><div className="mt-2 flex justify-end gap-2"><Button variant="ghost" size="icon" className="rounded-full text-white hover:bg-white/10"><HeartIcon className="h-5 w-5" /><span className="sr-only"> Me Gusta </span></Button><Button variant="ghost" size="icon" className="rounded-full text-white hover:bg-white/10"><MessageCircleIcon className="h-5 w-5" /><span className="sr-only"> Comentar </span></Button><Button variant="ghost" size="icon" className="rounded-full text-white hover:bg-white/10"><ShareIcon className="h-5 w-5" /><span className="sr-only"> Compartir </span></Button></div></div></div></div></ScrollArea><div className="sticky bottom-0 z-10 flex h-14 items-center justify-between border-t border-white/10 bg-black/80 px-4 backdrop-blur-md sm:h-16 sm:px-6"><div className="relative flex-1"><Textarea placeholder="Escribe tu mensaje..." className="h-10 w-full rounded-full bg-black/50 px-4 py-2 text-sm focus:outline-none sm:h-12 text-white" /><Button type="submit" variant="ghost" size="icon" className="absolute right-2 top-1/2 -translate-y-1/2 rounded-full text-blue-500 hover:bg-blue-500/10" ><SendIcon className="h-5 w-5" /><span className="sr-only"> Enviar </span></Button></div></div></div><div className="border-l border-white/10 bg-black/80 backdrop-blur-md"><div className="flex h-14 items-center justify-between border-b border-white/10 px-4 sm:h-16 sm:px-6"><h2 className="text-lg font-bold tracking-wider text-blue-500"> Novedades y Tendencias </h2><Button variant="ghost" size="icon" className="rounded-full text-blue-500 hover:bg-blue-500/10"><PlusIcon className="h-5 w-5" /><span className="sr-only"> Nuevo Contenido </span></Button></div><ScrollArea className="flex-1 overflow-auto"><div className="grid gap-4 p-4 sm:p-6"><div className="flex items-start gap-3"> <img src="/placeholder.svg" alt="Noticia" width={200} height={150} className="rounded-lg object-cover" style={{ aspectRatio: "200/150", objectFit: "cover" }} /> <div className="flex-1"><h3 className="font-medium text-blue-500"> Tendencias en Diseño Web </h3><p className="text-sm text-white/80"> Descubre las últimas tendencias en diseño web y cómo aplicarlas a tu proyecto. </p><div className="mt-2 flex justify-end gap-2"><Button variant="ghost" size="icon" className="rounded-full text-blue-500 hover:bg-blue-500/10"><HeartIcon className="h-5 w-5" /><span className="sr-only"> Me Gusta </span></Button></div></div></div></div></ScrollArea></div><div className="border-l border-white/10 bg-black/80 backdrop-blur-md"><div className="flex h-14 items-center justify-between border-b border-white/10 px-4 sm:h-16 sm:px-6" /></div></main></div> ) }
-function HeartIcon(props) { return ( <svg {...props} xmlns=" http://www.w3.org/2000/svg  " width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" > <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" /></svg> ) }
-function MessageCircleIcon(props) { return ( <svg {...props} xmlns=" http://www.w3.org/2000/svg  " width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" > <path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z" /></svg> ) }
-function MicIcon(props) { return ( <svg {...props} xmlns=" http://www.w3.org/2000/svg  " width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" > <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z" /><path d="M19 10v2a7 7 0 0 1-14 0v-2" /><line x1="12" x2="12" y1="19" y2="22" /></svg> ) }
-function OctagonIcon(props) { return ( <svg {...props} xmlns=" http://www.w3.org/2000/svg  " width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" > <polygon points="7.86 2 16.14 2 22 7.86 22 16.14 16.14 22 7.86 22 2 16.14 2 7.86 7.86 2" /></svg> ) }
-function PaperclipIcon(props) { return ( <svg {...props} xmlns=" http://www.w3.org/2000/svg  " width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" > <path d="m21.44 11.05-9.19 9.19a6 6 0 0 1-8.49-8.49l8.57-8.57A4 4 0 1 1 18 8.84l-8.59 8.57a2 2 0 0 1-2.83-2.83l8.49-8.48" /></svg> ) }
-function PlusIcon(props) { return ( <svg {...props} xmlns=" http://www.w3.org/2000/svg  " width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" > <path d="M5 12h14" /><path d="M12 5v14" /></svg> ) }
-function SearchIcon(props) { return ( <svg {...props} xmlns=" http://www.w3.org/2000/svg  " width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" > <circle cx="11" cy="11" r="8" /><path d="m21 21-4.3-4.3" /></svg> ) }
-function SendIcon(props) { return ( <svg {...props} xmlns=" http://www.w3.org/2000/svg  " width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" > <path d="m22 2-7 20-4-9-9-4Z" /><path d="M22 2 11 13" /></svg> ) }
-function ShareIcon(props) { return ( <svg {...props} xmlns=" http://www.w3.org/2000/svg  " width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" > <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8" /><polyline points="16 6 12 2 8 6" /><line x1="12" x2="12" y1="2" y2="15" /></svg> ) }
-function SmileIcon(props) { return ( <svg {...props} xmlns=" http://www.w3.org/2000/svg  " width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" > <circle cx="12" cy="12" r="10" /><path d="M8 14s1.5 2 4 2 4-2 4-2" /><line x1="9" x2="9.01" y1="9" y2="9" /><line x1="15" x2="15.01" y1="9" y2="9" /></svg> ) }
+# ◆ FitDiario · El Sistema
+
+App de entrenamiento diario convertida en un **sistema de progresión de cazador**
+al estilo de los manhwa de niveles: clases, dificultad, nivel y rango (E → S →
+Monarca), estadísticas que suben con lo que entrenas, misión diaria con hora
+límite y penalización, puertas semanales con jefe, mazmorras aleatorias, pruebas
+de ascenso, títulos y ventanas del Sistema con voz y sonido. Debajo de todo eso:
+demostraciones animadas, sesión guiada por voz, coach con IA y sincronización
+entre dispositivos. Funciona en el móvil y en el ordenador, sin instalar nada.
+
+## Realismo: el motor de carga
+
+- **Prueba de despertar.** Antes de asignar cargas, el Sistema te mide: flexiones
+  máximas, sentadillas en 60 s y plancha. De ahí salen las repeticiones de cada
+  ejercicio (p. ej. 8 flexiones máximas → 4 por serie). Se repite cada 4 semanas y
+  compara con la anterior.
+- **Fases.** Cimientos (sem. 1–4: 2 series, máx. 4 días), Construcción (5–12: 3
+  series, 5 días), Forja (13–24: 4 series, 6 días) y Atleta (25+). Cada fase
+  indica un resultado esperado honesto: esto son meses.
+- **Progresión automática.** Cada lunes el Sistema mira qué completaste de verdad
+  la semana anterior por patrón (empuje, sentadilla, core, tirón, bisagra, cardio):
+  ≥80 % de series → +8 % de carga; <50 % → −5 %.
+- **Carrera progresiva.** El día de exterior sigue una progresión de caminar a
+  correr (3 min andando/1 trotando … hasta 30–35 min continuos en 6 meses), con
+  banco y barra del parque y registro de km.
+- **Misión diaria real.** Entrenamiento, calentamiento, pasos (6.000 → 10.000
+  según la fase), 2 L de agua, sin azúcar añadido ni ultraprocesados, extras
+  pequeños y el cierre del día. En días de descanso: caminar 30 min.
+- **Cierre del día.** 5 minutos guiados de respiración y estiramientos.
+- **Cuerpo.** Peso, objetivo (IMC 24 si no lo fijas), IMC, ritmo real de pérdida
+  y semanas estimadas a 0,5–0,7 kg/semana.
+- **Habilidades.** A los niveles 3, 6, 10 y 15 eliges una de dos con efecto real
+  (descansos más cortos, perdón de una misión semanal, penalizaciones a la mitad,
+  XP extra en exterior, puntos extra por nivel, informe automático…).
+- **Alarmas.** Hora de entrenar, cierre del día y aviso de misión a las 22:00,
+  con ventana, sonido y vibración con la app abierta; notificaciones si el
+  navegador lo permite; archivo de calendario descargable.
+- **IA que actúa.** El Sistema puede cambiar tu entrenamiento de hoy, subir o bajar
+  series y repeticiones de un ejercicio, asignarte una misión secundaria,
+  registrar tu peso y cambiar la dificultad, y redacta un informe semanal.
+
+## Experiencia completa
+
+- **Tarjeta de cazador.** Licencia holográfica con emblema de rango, radar de
+  estadísticas y número de cazador; se guarda como imagen PNG.
+- **Cinemáticas.** Subidas de nivel, ascensos y poderes con pantalla completa,
+  partículas, arpegio y voz; XP flotante; sacudida en las penalizaciones;
+  ticks en las cuentas atrás.
+- **Registro del día.** Agua por vasos, pasos, sueño y semáforo de comidas;
+  completa sola la misión diaria y da referencias estimadas de kcal, proteína,
+  agua y sueño (Mifflin-St Jeor con un déficit moderado).
+- **Actividad libre.** Fútbol, bici, caminar, nadar…: XP (con tope diario),
+  resistencia y agilidad.
+- **Poderes.** 14 hitos físicos reales (10/25/50 flexiones, 40 sentadillas en
+  60 s, plancha 1 y 2 min, primera dominada, 5 y 10 km, −5 y −10 kg, 30 burpees,
+  pistol) con progreso; los medibles se desbloquean solos.
+- **Mapa muscular.** Zonas que trabaja el entrenamiento de hoy y mapa de calor
+  de la semana.
+- **Proyección del Sistema.** Peso a 12 semanas en tres escenarios (plan al
+  100 %, al 60 % y a tu ritmo real), siluetas ahora/en 12 semanas, flexiones
+  máximas previstas y fechas estimadas de los próximos rangos.
+- **Fotos de progreso.** Guardadas comprimidas en el dispositivo (IndexedDB),
+  con comparación inicio/ahora.
+- **Analista del Sistema.** Reglas sin conexión: inactividad, tendencia del
+  peso, sueño, hidratación, semana por debajo del plan, carga reducida; con
+  acción "modo ligero" (−20 % de repeticiones solo hoy).
+- **IA.** Briefing diario, análisis del entrenamiento al terminar, sensación
+  (fácil/justo/muy duro) que modula la progresión semanal.
+- **Exportar.** Historial completo en CSV (entrenos, pesos, actividades, rutas,
+  registro diario).
+- **Estado organizado.** Tarjeta, ventana de estado y cifras clave siempre a la
+  vista; el resto (camino, cuerpo y proyección, rendimiento, poderes,
+  habilidades, mapa muscular, ejército, fotos, historial) en secciones
+  plegables con resumen en la cabecera, y "abrir/plegar todo". Lo abierto se
+  recuerda en el dispositivo.
+
+## El Sistema
+
+- **Despertar.** Eliges nombre, clase (Luchador, Asesino, Tanque, Monje: cada
+  una con su ciclo semanal de entrenamientos y su estadística principal) y
+  dificultad (Normal, Difícil, Pesadilla, Muerte: multiplica reps, XP y castigo).
+- **Ventana de estado.** Nivel, rango, poder, título y cinco estadísticas (FUE,
+  AGI, VIT, RES, VOL) que crecen según los músculos que entrenas. Cada nivel da
+  3 puntos para asignar a mano.
+- **Misión diaria.** Entrenamiento asignado, calentamiento y extras (flexiones,
+  sentadillas, abdominales, kilómetros) escalados a tu nivel. Límite: 23:59.
+  Fallarla resta XP y aumenta los objetivos del día siguiente un 50 %
+  (modo estricto desactivable).
+- **Puertas.** Una por semana, con jefe y tareas contra reloj, del rango del
+  cazador. Al alcanzar el nivel de un rango superior se abre una **prueba de
+  ascenso**: derrotar a su jefe confirma el rango.
+- **Mazmorras instantáneas.** Puertas rojas aleatorias (35 % de los días), 3–4
+  rondas cortas contra reloj, opcionales, con XP y estadísticas extra.
+- **Modo sombra.** De 21:00 a 05:00 se abre un ritual nocturno (AMRAP de
+  10–12 min con la interfaz en tonos sombra). Con 4 rondas o más extraes una
+  sombra con nombre y rango (Soldado, Élite, Caballero, Mariscal) para tu
+  ejército; cada sombra da +2 % de XP permanente, hasta +30 %.
+- **Eventos de temporada.** Del día 25 a fin de mes aparece un jefe de
+  temporada propio de cada mes, un rango por encima del tuyo, con XP ×1,25 en
+  todo mientras dura, gran recompensa y +5 a tu estadística principal.
+- **Títulos.** 23 títulos por logros; el activo se muestra bajo tu nombre.
+- **Ventanas del Sistema.** Avisos con efecto de escritura, sonido, destello y
+  voz grave para subidas de nivel, ascensos, misiones, puertas y penalizaciones.
+- **Canal del Sistema.** El chat con IA habla como el Sistema y puede asignarte
+  misiones secundarias.
+
+## Cómo usarla
+
+1. Descarga `index.html` y ábrelo con el navegador (o abre la versión publicada).
+2. Rellena tu nombre, nivel y días por semana. Ya tienes tu plan.
+3. En el móvil: *Compartir → Añadir a pantalla de inicio* y queda como una app más.
+
+## Entrenamiento
+
+**Un entreno distinto cada día**, ajustado a tu nivel, que se puede hacer en
+casa y sin material (si tienes mancuernas, apuntas los kilos):
+
+| Día | Rutina |
+|---|---|
+| Lunes | Empuje — pecho, hombro y tríceps |
+| Martes | Tirón — espalda y bíceps |
+| Miércoles | Piernas y glúteos |
+| Jueves | Core y HIIT |
+| Viernes | Cuerpo completo |
+| Sábado | Movilidad y recuperación |
+| Domingo | Descanso activo |
+
+Con menos días por semana el plan se reorganiza solo, y puedes cambiar la
+rutina de hoy cuando quieras.
+
+**Calentamiento guiado.** Antes de cada entreno de fuerza o HIIT, 6 movimientos
+de unos 3 minutos (saltos, círculos de brazos, balanceos, rodillas arriba,
+gato-camello, gusano) con su animación; la sesión guiada empieza por ahí.
+
+**Demostraciones animadas.** Cada ejercicio tiene una figura animada que muestra
+el movimiento correcto, dibujada en tiempo real (sin vídeos que descargar, funciona
+sin conexión) y un consejo de técnica.
+
+**Sesión guiada con voz.** La app te lleva serie a serie: cuenta atrás para
+prepararte, cronometra los ejercicios de tiempo, te canta los descansos y te
+avisa con voz, pitido y vibración. Solo tienes que hacer el ejercicio.
+
+**Coach IA.** Un chat con un entrenador que conoce tu perfil, el entreno de hoy,
+tu historial y tus récords. Pregúntale por técnica, versiones cortas del
+entreno, molestias, progreso o motivación, y pídele retos personalizados.
+La IA completa funciona en la versión publicada en claude.ai; en el archivo
+local responde un coach básico con reglas.
+
+**Tu rendimiento.** Racha (los descansos planificados no la rompen), entrenos y
+tiempo totales, objetivo semanal, gráfica de volumen semanal (kg × reps),
+gráfica de peso corporal, récords personales e historial con notas.
+
+**Sincronización entre dispositivos.** Al abrir la app desde su enlace publicado
+en claude.ai, los entrenos, la XP y los ajustes se guardan en la nube y aparecen
+en cualquier dispositivo donde abras ese mismo enlace (mezcla por fecha: gana el
+cambio más reciente). En el archivo local los datos viven en el navegador
+(`localStorage`); en ambos casos hay botones para descargar una copia y
+restaurarla.
+
+## Detalles técnicos
+
+Un único `index.html`: HTML, CSS y JavaScript sin dependencias ni build.
+Las animaciones son una figura articulada interpolada entre poses en `<canvas>`;
+las gráficas son SVG generado a mano; la voz usa la Web Speech API del
+navegador; el coach IA usa la capacidad `sample` y la sincronización la capacidad `db` de
+los artifacts de claude.ai cuando están disponibles. Probado con Playwright sobre Chromium.
