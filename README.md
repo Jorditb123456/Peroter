@@ -39,6 +39,36 @@ entre dispositivos. Funciona en el móvil y en el ordenador, sin instalar nada.
   series y repeticiones de un ejercicio, asignarte una misión secundaria,
   registrar tu peso y cambiar la dificultad, y redacta un informe semanal.
 
+## Experiencia completa
+
+- **Tarjeta de cazador.** Licencia holográfica con emblema de rango, radar de
+  estadísticas y número de cazador; se guarda como imagen PNG.
+- **Cinemáticas.** Subidas de nivel, ascensos y poderes con pantalla completa,
+  partículas, arpegio y voz; XP flotante; sacudida en las penalizaciones;
+  ticks en las cuentas atrás.
+- **Registro del día.** Agua por vasos, pasos, sueño y semáforo de comidas;
+  completa sola la misión diaria y da referencias estimadas de kcal, proteína,
+  agua y sueño (Mifflin-St Jeor con un déficit moderado).
+- **Actividad libre.** Fútbol, bici, caminar, nadar…: XP (con tope diario),
+  resistencia y agilidad.
+- **Poderes.** 14 hitos físicos reales (10/25/50 flexiones, 40 sentadillas en
+  60 s, plancha 1 y 2 min, primera dominada, 5 y 10 km, −5 y −10 kg, 30 burpees,
+  pistol) con progreso; los medibles se desbloquean solos.
+- **Mapa muscular.** Zonas que trabaja el entrenamiento de hoy y mapa de calor
+  de la semana.
+- **Proyección del Sistema.** Peso a 12 semanas en tres escenarios (plan al
+  100 %, al 60 % y a tu ritmo real), siluetas ahora/en 12 semanas, flexiones
+  máximas previstas y fechas estimadas de los próximos rangos.
+- **Fotos de progreso.** Guardadas comprimidas en el dispositivo (IndexedDB),
+  con comparación inicio/ahora.
+- **Analista del Sistema.** Reglas sin conexión: inactividad, tendencia del
+  peso, sueño, hidratación, semana por debajo del plan, carga reducida; con
+  acción "modo ligero" (−20 % de repeticiones solo hoy).
+- **IA.** Briefing diario, análisis del entrenamiento al terminar, sensación
+  (fácil/justo/muy duro) que modula la progresión semanal.
+- **Exportar.** Historial completo en CSV (entrenos, pesos, actividades, rutas,
+  registro diario).
+
 ## El Sistema
 
 - **Despertar.** Eliges nombre, clase (Luchador, Asesino, Tanque, Monje: cada
