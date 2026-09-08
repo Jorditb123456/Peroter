@@ -28,6 +28,10 @@ casa y sin material (si tienes mancuernas, apuntas los kilos):
 Con menos días por semana el plan se reorganiza solo, y puedes cambiar la
 rutina de hoy cuando quieras.
 
+**Calentamiento guiado.** Antes de cada entreno de fuerza o HIIT, 6 movimientos
+de unos 3 minutos (saltos, círculos de brazos, balanceos, rodillas arriba,
+gato-camello, gusano) con su animación; la sesión guiada empieza por ahí.
+
 **Demostraciones animadas.** Cada ejercicio tiene una figura animada que muestra
 el movimiento correcto, dibujada en tiempo real (sin vídeos que descargar, funciona
 sin conexión) y un consejo de técnica.
@@ -54,13 +58,17 @@ local responde un coach básico con reglas.
 tiempo totales, objetivo semanal, gráfica de volumen semanal (kg × reps),
 gráfica de peso corporal, récords personales e historial con notas.
 
-**Tus datos.** Guardados en el navegador (`localStorage`), sin salir del
-dispositivo. Botones para descargar una copia y restaurarla.
+**Sincronización entre dispositivos.** Al abrir la app desde su enlace publicado
+en claude.ai, los entrenos, la XP y los ajustes se guardan en la nube y aparecen
+en cualquier dispositivo donde abras ese mismo enlace (mezcla por fecha: gana el
+cambio más reciente). En el archivo local los datos viven en el navegador
+(`localStorage`); en ambos casos hay botones para descargar una copia y
+restaurarla.
 
 ## Detalles técnicos
 
 Un único `index.html`: HTML, CSS y JavaScript sin dependencias ni build.
 Las animaciones son una figura articulada interpolada entre poses en `<canvas>`;
 las gráficas son SVG generado a mano; la voz usa la Web Speech API del
-navegador; el coach IA usa la capacidad `sample` de los artifacts de claude.ai
-cuando está disponible. Probado con Playwright sobre Chromium.
+navegador; el coach IA usa la capacidad `sample` y la sincronización la capacidad `db` de
+los artifacts de claude.ai cuando están disponibles. Probado con Playwright sobre Chromium.

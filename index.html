@@ -192,6 +192,11 @@ nav button.on b{filter:none}
 .rango{display:flex;align-items:center;gap:12px}
 .rango .ic{width:52px;height:52px;border-radius:12px;display:grid;place-items:center;font-size:26px;background:linear-gradient(135deg,rgba(157,123,255,.25),rgba(34,229,255,.2));border:1px solid var(--line2)}
 .rango h2{font-size:20px;color:var(--cy);text-shadow:var(--glow)}
+.cal{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--line)}
+.cal:last-child{border:0}
+.cal .chk{width:36px;height:34px;flex:0 0 36px}
+.cal .nm{flex:1;font-size:14px}
+.cal .mt{font-family:var(--fm);font-size:11px;color:var(--tx2)}
 .pen{border-color:rgba(255,93,108,.4);background:linear-gradient(180deg,rgba(255,93,108,.08),transparent),var(--sf)}
 </style>
 </head>
@@ -260,6 +265,8 @@ nav button.on b{filter:none}
         <div style="height:14px"></div>
         <button class="btn" id="btnGuia">▶ Iniciar sesión guiada</button>
       </div>
+
+      <div id="calCard"></div>
 
       <div id="retoHoyCard"></div>
 
@@ -403,9 +410,16 @@ nav button.on b{filter:none}
         <div class="row sp"><span class="sub">Penalización de XP por día saltado</span><button class="btn sm sec" id="btnPen">Activada</button></div>
       </div>
 
+      <div class="card hud">
+        <div class="row sp"><div class="eyebrow" style="margin:0">Sincronización</div><span class="estado" id="syncEstado"><i></i>solo este dispositivo</span></div>
+        <p class="sub" id="syncTexto" style="margin-top:8px">Abre la app desde su enlace de claude.ai en cada dispositivo y tus datos se sincronizan solos entre el móvil y el ordenador.</p>
+        <div style="height:10px"></div>
+        <button class="btn sec sm" id="btnSync" style="width:100%">Sincronizar ahora</button>
+      </div>
+
       <div class="card">
         <div class="eyebrow">Tus datos</div>
-        <p class="sub" style="margin-top:6px">Se guardan solo en este navegador. Haz una copia de vez en cuando.</p>
+        <p class="sub" style="margin-top:6px">Copia de seguridad en un archivo, por si acaso.</p>
         <div style="height:12px"></div>
         <div class="grid g2">
           <button class="btn sec sm" id="btnExport" style="width:100%">Descargar copia</button>
@@ -618,6 +632,12 @@ const PRESS_B=pose({eL:[108,22],hL:[110,4],eR:[92,22],hR:[90,4]});
 const CURL_B=pose({eL:[100,56],hL:[114,44],eR:[100,56],hR:[114,44]});
 const RDL_B=pose({h:[140,52],n:[128,58],p:[100,80],kL:[100,102],fL:[100,122],kR:[66,82],fR:[36,78],eL:[126,80],hL:[122,104],eR:[128,82],hR:[124,106]});
 
+const ARM_A=pose({eL:[118,38],hL:[136,40],eR:[82,38],hR:[64,40]});
+const ARM_B=pose({eL:[114,20],hL:[122,4],eR:[86,20],hR:[78,4]});
+const SWING_A=pose({kR:[120,90],fR:[136,104],eL:[86,50],hL:[72,44]});
+const SWING_B=pose({kR:[84,94],fR:[70,110],eL:[86,50],hL:[72,44]});
+const KNEE_A=pose({h:[102,22],n:[101,38],p:[98,78],kL:[122,74],fL:[114,96],kR:[96,100],fR:[92,122],eL:[116,50],hL:[124,38],eR:[84,56],hR:[82,74]});
+const KNEE_B=pose({h:[102,22],n:[101,38],p:[98,78],kR:[122,74],fR:[114,96],kL:[96,100],fL:[92,122],eR:[116,50],hR:[124,38],eL:[84,56],hL:[82,74]});
 // props: barra, silla, pared, suelo
 const ANIM={
   pushup:{f:[PUSH_UP,PUSH_DN],ms:900},          dips:{f:[DIP_A,DIP_B],ms:900,prop:"silla"},
@@ -636,8 +656,19 @@ const ANIM={
   run:{f:[RUN_A,RUN_B],ms:300},                 walk:{f:[RUN_A,RUN_B],ms:600},
   rope:{f:[STAND,ROPE_B],ms:320},               hipmob:{f:[LUNGE,HIP],ms:1200},
   fold:{f:[FOLD_A,FOLD_B],ms:1400},             catcow:{f:[CAT_A,CAT_B],ms:1300},
-  breathe:{f:[SIT_A,SIT_B],ms:2200}
+  breathe:{f:[SIT_A,SIT_B],ms:2200},
+  armcircle:{f:[STAND,ARM_A,ARM_B,ARM_A],ms:330}, legswing:{f:[SWING_A,SWING_B],ms:550},
+  highknees:{f:[KNEE_A,KNEE_B],ms:280},          inchworm:{f:[FOLD_B,PUSH_UP,PUSH_UP,FOLD_B,STAND],ms:800}
 };
+const CALENTAMIENTO=[
+  {n:"Saltos de tijera",r:40,a:"jacks",tip:"Suave, solo para subir pulsaciones."},
+  {n:"Círculos de brazos",r:30,a:"armcircle",tip:"15 s hacia delante y 15 s hacia atrás."},
+  {n:"Balanceo de pierna",r:30,a:"legswing",tip:"15 s por pierna. Agárrate a algo si hace falta."},
+  {n:"Rodillas arriba",r:30,a:"highknees",tip:"Ritmo medio, brazos activos."},
+  {n:"Gato-camello",r:30,a:"catcow",tip:"Despacio, respirando con cada movimiento."},
+  {n:"Gusano",r:30,a:"inchworm",tip:"Baja las manos al suelo, camina hasta plancha y vuelve."}
+];
+const SIN_CALENTAMIENTO=["descanso","movilidad"];
 const ease=t=>t<.5?2*t*t:-1+(4-2*t)*t;
 const lerpP=(a,b,t)=>{const o={};for(const k in a)o[k]=[a[k][0]+(b[k][0]-a[k][0])*t,a[k][1]+(b[k][1]-a[k][1])*t];return o;};
 function poseEn(anim,ms){
@@ -712,7 +743,64 @@ function cargar(){
   if(!S||!S.perfil){ S=null; return false; }
   normalizar(); return true;
 }
-function guardar(){ try{ localStorage.setItem(KEY,JSON.stringify(S)); }catch(e){ toast("No se pudieron guardar los datos"); } }
+function guardar(){
+  S.mod=Date.now(); const h=S.sesiones[hoyISO()]; if(h) h.mod=S.mod;
+  try{ localStorage.setItem(KEY,JSON.stringify(S)); }catch(e){ toast("No se pudieron guardar los datos"); }
+  syncProgramar();
+}
+
+/* ================= SINCRONIZACIÓN ENTRE DISPOSITIVOS ================= */
+const SYNC={db:null,t:null,ultimo:0,aplicando:false,subs:[]};
+const META_CAMPOS=["perfil","ajustes","xp","xpLog","retos","logrosVistos","peso","override","revisado","chat"];
+function syncEstado(txt,on){ const e=$("#syncEstado"); if(!e) return; e.classList.toggle("on",!!on); e.innerHTML="<i></i>"+esc(txt); }
+function syncProgramar(){ if(!SYNC.db||SYNC.aplicando) return; clearTimeout(SYNC.t); SYNC.t=setTimeout(syncSubir,900); }
+function metaLocal(){ const m={mod:S.mod||0}; META_CAMPOS.forEach(k=>{ if(S[k]!==undefined) m[k]=S[k]; }); return m; }
+async function syncSubir(todo){
+  if(!SYNC.db||!S) return;
+  try{
+    const ops=[SYNC.db.doc("fitdiario/meta").set(metaLocal())];
+    const fechas=todo?Object.keys(S.sesiones):Object.keys(S.sesiones).filter(f=>(S.sesiones[f].mod||0)>SYNC.ultimo);
+    fechas.forEach(f=>ops.push(SYNC.db.doc("sesiones/"+f).set(Object.assign({},S.sesiones[f],{mod:S.sesiones[f].mod||S.mod||Date.now()}))));
+    await Promise.all(ops); SYNC.ultimo=Date.now();
+    syncEstado("sincronizado "+new Date().toLocaleTimeString("es-ES",{hour:"2-digit",minute:"2-digit"}),true);
+  }catch(e){ syncEstado("error al sincronizar",false); }
+}
+// Mezcla el estado remoto con el local: gana el más reciente, sesión a sesión.
+function syncMezclar(meta,sesiones){
+  let cambio=false;
+  if(meta&&(meta.mod||0)>(S.mod||0)){ META_CAMPOS.forEach(k=>{ if(meta[k]!==undefined) S[k]=meta[k]; }); S.mod=meta.mod; cambio=true; }
+  (sesiones||[]).forEach(r=>{ const f=r.id, loc=S.sesiones[f]; if(!loc||(r.mod||0)>(loc.mod||0)){ const c=Object.assign({},r); delete c.id; S.sesiones[f]=c; cambio=true; } });
+  if(cambio){ SYNC.aplicando=true; try{ localStorage.setItem(KEY,JSON.stringify(S)); }catch(e){} SYNC.aplicando=false; }
+  return cambio;
+}
+async function syncBajar(){
+  const db=SYNC.db; let meta=null, ses=[];
+  const m=await db.doc("fitdiario/meta").get(); meta=m.exists?m.data():null;
+  const q=await db.collection("sesiones").limit(1000).get(); ses=q.docs.filter(d=>d.exists).map(d=>Object.assign({id:d.id},d.data()));
+  return {meta,ses};
+}
+async function syncAhora(){
+  if(!SYNC.db){ toast("La sincronización funciona al abrir la app desde su enlace de claude.ai"); return; }
+  try{ const {meta,ses}=await syncBajar(); if(syncMezclar(meta,ses)){ normalizar(); pintarTodo(); } await syncSubir(true); toast("Sincronizado ☁️"); }
+  catch(e){ toast("No se pudo sincronizar ahora"); }
+}
+async function syncArrancar(db){
+  SYNC.db=db; syncEstado("conectando…",false);
+  let meta=null, ses=[];
+  try{ ({meta,ses}=await syncBajar()); }catch(e){ syncEstado("sin conexión con la nube",false); return; }
+  if(!S){
+    if(meta&&meta.perfil){ S={v:2,sesiones:{}}; META_CAMPOS.forEach(k=>{ if(meta[k]!==undefined) S[k]=meta[k]; }); S.mod=meta.mod||0; normalizar(); syncMezclar(null,ses); aplicarPenalizaciones(); abrirApp(); toast("Datos recuperados de la nube ☁️"); }
+    else { syncEstado("listo para sincronizar",true); return; }
+  } else {
+    if(syncMezclar(meta,ses)){ normalizar(); pintarTodo(); toast("Datos sincronizados desde otro dispositivo ☁️"); }
+  }
+  await syncSubir(true);
+  // cambios en vivo desde otros dispositivos
+  SYNC.subs.push(db.doc("fitdiario/meta").onSnapshot(sn=>{ if(sn.metadata.hasPendingWrites||!sn.exists) return; if(syncMezclar(sn.data(),[])){ normalizar(); pintarTodo(); } },()=>{}));
+  SYNC.subs.push(db.collection("sesiones").onSnapshot(sn=>{ if(sn.metadata.hasPendingWrites) return;
+    const rows=sn.docChanges().filter(c=>c.type!=="removed"&&c.doc.exists).map(c=>Object.assign({id:c.doc.id},c.doc.data()));
+    if(rows.length&&syncMezclar(null,rows)){ pintarTodo(); } },()=>{}));
+}
 
 let toastT=null;
 function toast(msg){
@@ -737,14 +825,16 @@ function sesionDe(fecha){
   let ses=S.sesiones[fecha];
   if(ses&&(ses.rutina===clave||ses.completada)) return ses;
   const R=RUTINAS[clave];
-  ses={rutina:clave,nombre:R.nombre,completada:false,notas:"",inicio:null,dur:0,saltos:0,guiada:false,
+  ses={rutina:clave,nombre:R.nombre,completada:false,notas:"",inicio:null,dur:0,saltos:0,guiada:false,mod:Date.now(),
+    cal:SIN_CALENTAMIENTO.includes(clave)?[]:CALENTAMIENTO.map(c=>({n:c.n,r:c.r,a:c.a,tip:c.tip,ok:false})),
     ejercicios:R.ej.map(e=>{const a=ajusta(e,S.perfil.nivel);
       return {n:e.n,m:e.m,t:e.t,a:e.a,tip:e.tip,obj:a,sets:Array.from({length:a.s},()=>({p:"",r:"",ok:false}))};})};
   S.sesiones[fecha]=ses; guardar();
   return ses;
 }
+function calHecho(ses){ return !ses.cal||!ses.cal.length||ses.cal.every(c=>c.ok); }
 function duracionEstimada(ses){
-  let seg=0;
+  let seg=(ses.cal||[]).reduce((a,c)=>a+c.r+3,0);
   ses.ejercicios.forEach(e=>{ seg+=e.sets.length*((e.t==="tiempo"?e.obj.r:e.obj.r*3)+e.obj.d); });
   return Math.round(seg/60);
 }
@@ -890,6 +980,17 @@ function pintarHoy(){
   $("#ringPct").innerHTML=pct+"%<small>"+hechas+"/"+total+" SERIES</small>";
   $("#ringC").style.strokeDashoffset=(257.6*(1-pct/100)).toFixed(1);
 
+  // calentamiento
+  const cal=ses.cal||[];
+  if(!cal.length) $("#calCard").innerHTML="";
+  else{
+    const hechos=cal.filter(c=>c.ok).length, listo=hechos===cal.length, abierto=$("#calCard .ex.open")!==null;
+    $("#calCard").innerHTML='<div class="ex'+(listo?" done":"")+(abierto?" open":"")+'" style="margin-bottom:14px"><header data-toggle="cal"><span class="n">'+(listo?"✓":"🔥")+'</span>'+
+      '<span style="flex:1"><span class="nm">Calentamiento</span><span class="mt">'+hechos+'/'+cal.length+' · ≈ '+Math.round(cal.reduce((a,c)=>a+c.r+3,0)/60)+' min · antes de empezar</span></span><span class="chev">▾</span></header>'+
+      '<div class="body">'+cal.map((c,k)=>'<div class="cal"><button class="chk'+(c.ok?" on":"")+'" data-cal="'+k+'" aria-label="Marcar">✓</button><span class="nm">'+esc(c.n)+'<span class="mt" style="display:block">'+c.r+' s · '+esc(c.tip)+'</span></span><canvas width="120" height="84" style="width:60px;height:42px;flex:0 0 60px" data-anim="'+esc(c.a)+'"></canvas></div>').join("")+
+      '<button class="btn sec sm" id="btnCal" style="width:100%;margin-top:12px">'+(listo?"Repetir calentamiento guiado":"▶ Calentar ahora (guiado)")+'</button></div></div>';
+    $$("#calCard canvas[data-anim]").forEach(cv=>registrarLienzo(cv,cv.dataset.anim,false));
+  }
   // reto del día en Hoy
   const est=estadoReto(f), reto=RETOS.find(r=>r.id===est.id);
   $("#retoHoyCard").innerHTML='<div class="card"><div class="eyebrow">Reto del día</div>'+
@@ -985,6 +1086,7 @@ function pintarAjustes(){
   $("#btnSonido").textContent=S.ajustes.sonido?"Activado":"Desactivado";
   $("#btnAuto").textContent=S.ajustes.auto?"Activado":"Desactivado";
   $("#btnPen").textContent=S.ajustes.pen?"Activada":"Desactivada";
+  $("#syncTexto").textContent=SYNC.db?"Tus entrenos, XP y ajustes se guardan en la nube y aparecen en cualquier dispositivo donde abras este enlace.":"Abre la app desde su enlace de claude.ai en cada dispositivo y tus datos se sincronizan solos entre el móvil y el ordenador.";
 }
 
 /* ================= GRÁFICAS ================= */
@@ -1097,7 +1199,7 @@ async function exportar(){
 }
 function importar(file){
   const fr=new FileReader();
-  fr.onload=()=>{ try{ const d=JSON.parse(fr.result); if(!d||!d.perfil) throw 0; S=d; normalizar(); guardar(); pintarTodo(); toast("Datos restaurados"); }catch(e){ toast("Ese archivo no es una copia válida"); } };
+  fr.onload=()=>{ try{ const d=JSON.parse(fr.result); if(!d||!d.perfil) throw 0; S=d; normalizar(); S.mod=Date.now(); Object.values(S.sesiones).forEach(x=>x.mod=S.mod); guardar(); if(SYNC.db) syncSubir(true); pintarTodo(); toast("Datos restaurados"); }catch(e){ toast("Ese archivo no es una copia válida"); } };
   fr.readAsText(file);
 }
 
@@ -1171,14 +1273,42 @@ async function retoIA(){
 }
 
 /* ================= SESIÓN GUIADA ================= */
-const G={on:false,i:0,j:0,fase:"",timer:null,fin:0,tot:0,ultimoAviso:-1};
-function guiaIniciar(){
-  const ses=sesionDe(hoyISO()); G.i=0; G.j=0;
+const G={on:false,i:0,j:0,c:0,modo:"ej",soloCal:false,fase:"",timer:null,fin:0,tot:0,ultimoAviso:-1};
+function guiaIniciar(soloCal){
+  const ses=sesionDe(hoyISO()); G.i=0; G.j=0; G.c=0; G.soloCal=soloCal===true;
+  G.modo=(G.soloCal||!calHecho(ses))&&(ses.cal||[]).length?"cal":"ej";
+  if(G.modo==="cal"){ G.c=ses.cal.findIndex(c=>!c.ok); if(G.c<0||G.soloCal) G.c=0; }
   outer: for(let i=0;i<ses.ejercicios.length;i++) for(let j=0;j<ses.ejercicios[i].sets.length;j++) if(!ses.ejercicios[i].sets[j].ok){ G.i=i; G.j=j; break outer; }
   G.on=true; $("#guia").classList.add("on"); document.body.style.overflow="hidden";
   if(!ses.inicio){ ses.inicio=Date.now(); guardar(); }
-  hablar("Sesión guiada. "+ses.nombre.split(" — ")[0]+". Vamos.");
-  guiaPrep();
+  hablar("Sesión guiada. "+ses.nombre.split(" — ")[0]+". "+(G.modo==="cal"?"Empezamos calentando.":"Vamos."));
+  if(G.modo==="cal") calPrep(); else guiaPrep();
+}
+function calPrep(){
+  clearInterval(G.timer); const ses=sesionDe(hoyISO()), c=ses.cal[G.c];
+  G.fase="calprep";
+  $("#gPaso").textContent="CALENTAMIENTO "+(G.c+1)+"/"+ses.cal.length; $("#gNombre").textContent=c.n; $("#gTip").textContent=c.tip; $("#gObj").textContent=c.r+" segundos";
+  $("#gFase").innerHTML=ses.cal.map((x,k)=>'<i class="'+(x.ok?"ok":k===G.c?"on":"")+'"></i>').join(""); registrarLienzo($("#gCanvas"),c.a,true);
+  $("#gEyebrow").textContent="Prepárate"; $("#gBig").className="big num"; $("#gIns").classList.add("hidden");
+  $("#gHecho").textContent="Empezar ya"; $("#gSaltar").textContent="Saltar";
+  hablar(c.n+". "+c.r+" segundos.");
+  guiaCuenta(3,calSerie,n=>{ $("#gBig").textContent=n; });
+}
+function calSerie(){
+  const ses=sesionDe(hoyISO()), c=ses.cal[G.c];
+  G.fase="calserie"; $("#gEyebrow").textContent="Calentando"; $("#gHecho").textContent="Terminar antes"; hablar("¡Ya!"); vibrar(60);
+  guiaCuenta(c.r,()=>{ bip(); calMarcar(); },q=>{ $("#gBig").textContent=q; if(q===5) hablar("Cinco segundos."); });
+}
+function calMarcar(){
+  const ses=sesionDe(hoyISO()); ses.cal[G.c].ok=true;
+  if(calHecho(ses)&&!ses.calXP){ ses.calXP=true; darXP(20,"Calentamiento"); }
+  guardar(); calSiguiente();
+}
+function calSiguiente(){
+  const ses=sesionDe(hoyISO());
+  if(G.c+1<ses.cal.length){ G.c++; calPrep(); return; }
+  if(G.soloCal){ hablar("Calentamiento terminado. Ahora, a entrenar."); toast("Calentamiento completo 🔥"); guiaSalir(); return; }
+  G.modo="ej"; hablar("Calentamiento terminado. Empieza el entreno."); guiaPrep();
 }
 function guiaSalir(){ clearInterval(G.timer); G.timer=null; G.on=false; $("#guia").classList.remove("on"); document.body.style.overflow=""; try{ speechSynthesis.cancel(); }catch(e){} pintarHoy(); pintarCabecera(); }
 function guiaCabecera(){
@@ -1250,6 +1380,8 @@ function guiaFin(){
 }
 function guiaAccion(){
   if(!G.on) return;
+  if(G.fase==="calprep"){ calSerie(); return; }
+  if(G.fase==="calserie"){ clearInterval(G.timer); G.timer=null; calMarcar(); return; }
   if(G.fase==="prep"){ guiaSerie(); return; }
   if(G.fase==="serie"){ const ses=sesionDe(hoyISO()), e=ses.ejercicios[G.i];
     if(e.t==="tiempo"){ const hecho=Math.max(1,G.tot-Math.max(0,Math.ceil((G.fin-Date.now())/1000))); clearInterval(G.timer); G.timer=null; guiaMarcar({r:String(hecho)}); }
@@ -1260,6 +1392,7 @@ function guiaAccion(){
 }
 function guiaSaltar(){
   if(!G.on) return;
+  if(G.fase==="calprep"||G.fase==="calserie"){ clearInterval(G.timer); G.timer=null; calSiguiente(); return; }
   if(G.fase==="descanso"||G.fase==="fin"){ guiaSalir(); return; }
   const ses=sesionDe(hoyISO()); ses.saltos=(ses.saltos||0)+1; guardar();
   clearInterval(G.timer); G.timer=null;
@@ -1276,13 +1409,19 @@ function eventos(){
     const nombre=$("#oNombre").value.trim(); if(!nombre){ $("#oNombre").focus(); toast("Escribe tu nombre para empezar"); return; }
     S={v:2,perfil:{nombre,nivel:$("#oNivel").value,objetivo:$("#oObjetivo").value,dias:parseInt($("#oDias").value,10),creado:hoyISO()},sesiones:{},peso:[],override:{}};
     normalizar(); const kg=parseFloat($("#oPeso").value); if(kg>0) S.peso.push({f:hoyISO(),kg:Math.round(kg*10)/10});
-    darXP(50,"Alta en FitDiario"); guardar(); abrirApp(); toast("Sistema activado. +50 XP de bienvenida, "+nombre+" ⚡");
+    darXP(50,"Alta en FitDiario"); guardar(); abrirApp(); if(SYNC.db) syncSubir(true); toast("Sistema activado. +50 XP de bienvenida, "+nombre+" ⚡");
   });
   $$("nav button").forEach(b=>b.addEventListener("click",()=>irA(b.dataset.tab)));
 
   const lista=$("#listaEjercicios");
   lista.addEventListener("click",ev=>{
     const ok=ev.target.closest("[data-ok]"); if(ok){ const[i,j]=ok.dataset.ok.split("-").map(Number); marcarSerie(i,j); return; }
+    const th=ev.target.closest("[data-toggle]"); if(th) th.parentElement.classList.toggle("open");
+  });
+  $("#calCard").addEventListener("click",ev=>{
+    const c=ev.target.closest("[data-cal]");
+    if(c){ const ses=sesionDe(hoyISO()); const it=ses.cal[+c.dataset.cal]; it.ok=!it.ok; if(calHecho(ses)&&!ses.calXP){ ses.calXP=true; darXP(20,"Calentamiento"); toast("Calentamiento completo: +20 XP 🔥"); } guardar(); pintarHoy(); pintarCabecera(); return; }
+    if(ev.target.closest("#btnCal")){ guiaIniciar(true); return; }
     const th=ev.target.closest("[data-toggle]"); if(th) th.parentElement.classList.toggle("open");
   });
   lista.addEventListener("input",ev=>{ const el=ev.target; if(!el.dataset.c) return; const ses=sesionDe(hoyISO()); ses.ejercicios[+el.dataset.e].sets[+el.dataset.s][el.dataset.c]=el.value; guardar(); });
@@ -1316,6 +1455,7 @@ function eventos(){
   const tog=(id,k,off)=>$(id).addEventListener("click",()=>{ S.ajustes[k]=!S.ajustes[k]; if(off&&!S.ajustes[k]) off(); guardar(); pintarAjustes(); });
   tog("#btnVoz","voz",()=>{ try{ speechSynthesis.cancel(); }catch(e){} }); tog("#btnSonido","sonido"); tog("#btnAuto","auto",pararDescanso); tog("#btnPen","pen");
 
+  $("#btnSync").addEventListener("click",syncAhora);
   $("#btnExport").addEventListener("click",exportar);
   $("#btnImport").addEventListener("click",()=>$("#fileImport").click());
   $("#fileImport").addEventListener("change",ev=>{ if(ev.target.files[0]) importar(ev.target.files[0]); ev.target.value=""; });
@@ -1330,6 +1470,7 @@ estadoCoach(false);
 if(window.claude&&typeof window.claude.use==="function"){
   window.claude.use("downloads").then(d=>{ guardarArchivo=d||null; }).catch(()=>{});
   window.claude.use("sample").then(s=>{ sampleIA=s||null; estadoCoach(!!s); }).catch(()=>{});
+  window.claude.use("db").then(db=>{ if(db) syncArrancar(db); }).catch(()=>{});
 }
 })();
 </script>
